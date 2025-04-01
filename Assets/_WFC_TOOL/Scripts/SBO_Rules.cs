@@ -1,7 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SBO_Rules", menuName = "WFC_Tool/Rules")]
-public class SBO_Rules : ScriptableObject
+namespace PCG_Tool
 {
-    
+    [CreateAssetMenu(fileName = "New Rules", menuName = "WFC_Tool/Rules")]
+    public class SBO_Rules : ScriptableObject
+    {
+
+    }
+
 }
