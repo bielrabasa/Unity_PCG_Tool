@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,9 +9,22 @@ namespace PCG_Tool
     public class SBO_RepresentationModel : ScriptableObject
     {
         public SBO_TileSet tileSet;
-        public Vector3Int gridSize;
+        private Vector3Int gridSize;
+        [SerializeField] private TileInfo[] tiles;
+        public event Action OnModelChanged;
 
-        public TileInfo[] tiles;
+        public Vector3Int GridSize
+        {
+            get => gridSize;
+            set
+            {
+                if (gridSize != value)
+                {
+                    ResizeGrid(value);
+                }
+            }
+        }
+
 
         private void OnEnable()
         {
@@ -48,6 +62,8 @@ namespace PCG_Tool
         public void SetTile(int x, int y, int z, TileInfo tile)
         {
             tiles[Index(x, y, z)] = tile;
+            
+            NotifyModelChanges();
         }
 
         public void ResizeGrid(Vector3Int newSize)
@@ -70,6 +86,13 @@ namespace PCG_Tool
             tiles = newTiles;
             gridSize = newSize;
             EditorUtility.SetDirty(this); // Guardar cambios en el editor
+
+            NotifyModelChanges();
+        }
+
+        private void NotifyModelChanges()
+        {
+            OnModelChanged?.Invoke();
         }
     }
 

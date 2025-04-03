@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PCG_Tool
 {
-
+    [System.Serializable]
     public struct TileInfo
     {
         public short id;
@@ -33,7 +33,8 @@ namespace PCG_Tool
 
         public static Vector3 GetMirroredScale(TileOrientation orientation)
         {
-            return Vector3.one * (((orientation & TileOrientation.Mirrored) != 0) ? -1 : 1);
+            if ((orientation & TileOrientation.Mirrored) != 0) return new Vector3(-1, 1, 1);
+            return Vector3.one;
         }
     }
 

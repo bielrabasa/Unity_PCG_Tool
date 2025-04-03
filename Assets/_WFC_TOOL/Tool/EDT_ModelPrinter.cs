@@ -20,6 +20,17 @@ public class EDT_ModelPrinter : Editor
 
         EditorGUILayout.Space(10);
 
+        EditorGUILayout.LabelField("Generation", EditorStyles.whiteLabel);
+        printer.generateOnStart = EditorGUILayout.Toggle("Generate On Start", printer.generateOnStart);
+        printer.updateChanges = EditorGUILayout.Toggle("Update Changes", printer.updateChanges);
+
+        EditorGUILayout.Space(10);
+
+        if (GUI.changed)
+        {
+            printer.OnValidate();
+        }
+
         //Generate button
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("Generate", GUILayout.Height(30)))
