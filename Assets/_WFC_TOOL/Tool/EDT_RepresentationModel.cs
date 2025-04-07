@@ -22,8 +22,8 @@ namespace PCG_Tool
             EditorGUILayout.Space(10);
             
             //Generate button
-            GUI.backgroundColor = Color.grey;
-            if (GUILayout.Button("Manual Edit", GUILayout.Height(30)))
+            GUI.backgroundColor = STY_Style.Deactivated_Color;
+            if (GUILayout.Button("Manual Edit", STY_Style.Button_Layout))
             {
                 EDT_WIN_RepresentationModel.ShowWindow(model);
             }

@@ -32,8 +32,8 @@ public class EDT_ModelPrinter : Editor
         }
 
         //Generate button
-        GUI.backgroundColor = Color.green;
-        if (GUILayout.Button("Generate", GUILayout.Height(30)))
+        GUI.backgroundColor = STY_Style.Positive_Color;
+        if (GUILayout.Button("Generate", STY_Style.Button_Layout))
         {
             printer.Generate();
         }
@@ -41,8 +41,8 @@ public class EDT_ModelPrinter : Editor
         EditorGUILayout.Space(5);
 
         //Erase button
-        GUI.backgroundColor = Color.red;
-        if (GUILayout.Button("Clear", GUILayout.Height(30)))
+        GUI.backgroundColor = STY_Style.Negative_Color;
+        if (GUILayout.Button("Clear", STY_Style.Button_Layout))
         {
             printer.ClearTiles();
         }
