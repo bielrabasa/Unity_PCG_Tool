@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace PCG_Tool
@@ -6,6 +7,8 @@ namespace PCG_Tool
     public class SBO_Rules : ScriptableObject
     {
         public SBO_TileSet tileSet;
+
+        public TileRule[] tileRules;
     }
 
 }

@@ -29,7 +29,6 @@ namespace PCG_Tool
         Mesh ghostFaceMesh;
         [SerializeField] Material ghostFaceMat;
         private float ghostFaceSeparation = 0.2f;
-        Color ghostFaceBaseColor = new Color(1, 0, 0, .2f);
 
         //Color picker
         private int selectedColorIndex = 0;
@@ -37,10 +36,12 @@ namespace PCG_Tool
 
         public override void OnInspectorGUI()
         {
+            rules = (SBO_Rules)target;
+
             EditorGUILayout.LabelField("Rules", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-            DrawDefaultInspector();
+            DrawTileSetInspector();
 
             EditorGUILayout.Space(20);
 
@@ -76,11 +77,61 @@ namespace PCG_Tool
             }
         }
 
+        private void DrawTileSetInspector()
+        {
+            SBO_TileSet newTileSet = (SBO_TileSet)EditorGUILayout.ObjectField("Tile Set", rules.tileSet, typeof(SBO_TileSet), false);
+
+            //If is the same, don't change anything
+            if (newTileSet == rules.tileSet) return;
+            //Changing something
+            
+            //1st Assign
+            if(rules.tileSet == null && newTileSet != null)
+            {
+                rules.tileSet = newTileSet;
+                UpdateTileSet();
+                return;
+            }
+
+            //Changing tileSet with same size
+            if (newTileSet != null && rules.tileSet.GetTileCount() == newTileSet.GetTileCount())
+            {
+                if (EditorUtility.DisplayDialog(
+                        "Changing TileSet...",
+                        "Changing TileSet with the same Tile count will match rule data by Id. Are you sure you want to do it?",
+                        "Yes, change",
+                        "Cancel"))
+                {
+                    rules.tileSet = newTileSet;
+                }
+                return;
+            }
+
+            //If changing tileSet CAUTION
+            if (EditorUtility.DisplayDialog(
+                    "Changing TileSet...",
+                    "Changing TileSet with different Tile count will erase all rules data. Are you sure you want to do it?",
+                    "Yes, change",
+                    "Cancel"))
+            {
+                rules.tileSet = newTileSet;
+                UpdateTileSet();
+                return;
+            }
+        }
+
+        private void UpdateTileSet()
+        {
+            if(rules.tileSet == null) return;
+
+            rules.tileRules = new TileRule[rules.tileSet.GetTileCount()];
+
+            EditorUtility.SetDirty(rules);
+        }
+
         private void ShowTilesPreview(bool setupCamera = true)
         {
-            rules = (SBO_Rules)target;
-            SBO_TileSet tileSet = rules.tileSet;
-            if (tileSet == null)
+            if (rules.tileSet == null)
             {
                 Debug.LogWarning("Rules: No TileSet asigned.");
                 return;
@@ -93,7 +144,7 @@ namespace PCG_Tool
                 EditorWindow.CreateWindow<SceneView>();
             }
 
-            SetupObjects(tileSet);
+            SetupObjects(rules.tileSet);
 
             SetupGhostFaceData();
 
@@ -119,7 +170,7 @@ namespace PCG_Tool
             //Calculate tile distribution
             Vector3 tileSize = tileSet.tileSize;
             int rowSize = Mathf.CeilToInt(Mathf.Sqrt(tileSet.GetTileCount()));
-            tilePreviewCenter = new Vector3((rowSize / 2f) * tileSize.x * tilePreviewSeparation, 0, (rowSize / 2f) * tileSize.z * tilePreviewSeparation);
+            tilePreviewCenter = new Vector3((rowSize - 1) * (tileSize.x + tilePreviewSeparation) / 2f, 0, (rowSize - 1) * (tileSize.z + tilePreviewSeparation) / 2f);
 
             //Intanciate tiles
             for (int i = 0; i < tileSet.GetTileCount(); i++)
@@ -129,7 +180,7 @@ namespace PCG_Tool
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-                instance.transform.position = new Vector3((i % rowSize) * tileSize.x * tilePreviewSeparation, 0, (i / rowSize) * tileSize.z * tilePreviewSeparation);
+                instance.transform.position = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
                 instance.transform.SetParent(_previewParent.transform);
                 instance.layer = _previewLayer;
 
@@ -248,6 +299,9 @@ namespace PCG_Tool
 
             foreach (var face in ghostFaces)
             {
+                //Color from pick TODO: Only if they have it
+                //ghostFaceMat.color = TileRule.GetColor(selectedColorIndex);
+
                 Vector3 faceScale = EDT_GUI_FacePreview.GetScaleForNormal(face.rotation * Vector3.forward, rules.tileSet.tileSize);
                 Matrix4x4 matrix = Matrix4x4.TRS(face.position, face.rotation, faceScale);
                 Graphics.DrawMeshNow(ghostFaceMesh, matrix);
@@ -301,9 +355,8 @@ namespace PCG_Tool
                 }
 
                 // Botón invisible encima para detección de clics
-                if (GUI.Button(rect, (i == 0 ? "/" : ""), GUIStyle.none))
+                if (GUI.Button(rect, GUIContent.none, GUIStyle.none))
                 {
-                    //TODO: Solve button 0
                     selectedColorIndex = i;
                 }
             }
@@ -320,7 +373,10 @@ namespace PCG_Tool
             if (colorTextures != null) return;
 
             colorTextures = new Texture2D[16];
-            for (int i = 0; i < 16; i++)
+
+            colorTextures[0] = SCR_CheckerTextureUtility.GetCheckerTexture();
+
+            for (int i = 1; i < 16; i++)
             {
                 Color col = TileRule.GetColor(i);
                 Texture2D tex = new Texture2D(1, 1);

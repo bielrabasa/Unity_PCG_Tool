@@ -7,6 +7,11 @@ namespace PCG_Tool
     [System.Serializable]
     public struct TileRule
     {
+        public bool canMirror;
+        public bool canRotateX;
+        public bool canRotateY;
+        public bool canRotateZ;
+
         public TileColor Up;
         public TileColor Down;
         public TileColor Left;
@@ -37,6 +42,57 @@ namespace PCG_Tool
                 _ => Color.clear
             };
         }
+
+        public void SwitchColorToFace(FaceDirection dir, TileColor color)
+        {
+            TileColor current = GetFace(dir);
+
+            current ^= color;
+
+            SetFace(dir, current);
+        }
+
+        public bool HasColor(FaceDirection dir, TileColor color)
+        {
+            return (GetFace(dir) & color) != 0;
+        }
+
+        public TileColor GetFace(FaceDirection dir)
+        {
+            return dir switch
+            {
+                FaceDirection.Up => Up,
+                FaceDirection.Down => Down,
+                FaceDirection.Left => Left,
+                FaceDirection.Right => Right,
+                FaceDirection.Forward => Forward,
+                FaceDirection.Back => Back,
+                _ => TileColor.None
+            };
+        }
+
+        private void SetFace(FaceDirection dir, TileColor value)
+        {
+            switch (dir)
+            {
+                case FaceDirection.Up: Up = value; break;
+                case FaceDirection.Down: Down = value; break;
+                case FaceDirection.Left: Left = value; break;
+                case FaceDirection.Right: Right = value; break;
+                case FaceDirection.Forward: Forward = value; break;
+                case FaceDirection.Back: Back = value; break;
+            }
+        }
+    }
+
+    public enum FaceDirection
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+        Forward,
+        Back
     }
 
     [System.Flags]
