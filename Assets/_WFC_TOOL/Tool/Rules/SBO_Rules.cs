@@ -9,6 +9,8 @@ namespace PCG_Tool
         public SBO_TileSet tileSet;
 
         public TileRule[] tileRules;
+
+        public TileColor[] colorTable = new TileColor[16]; //Color compatibility
     }
 
 }

@@ -23,7 +23,7 @@ namespace PCG_Tool
         {
             return index switch
             {
-                0 => new Color(0.8f, 0.8f, 0.8f, 0.5f), // Air (invisible)
+                0 => new Color(0.8f, 0.8f, 0.8f), // Air (invisible)
                 1 => Color.red,
                 2 => Color.green,
                 3 => Color.blue,
@@ -41,6 +41,14 @@ namespace PCG_Tool
                 15 => new Color(0f, 0.5f, 0.5f), // Teal
                 _ => Color.clear
             };
+        }
+
+        public static TileColor GetTileColorByIndex(int index)
+        {
+            if (index < 0 || index > 15)
+                throw new System.ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 15.");
+
+            return (TileColor)(1 << index);
         }
 
         public void SwitchColorToFace(FaceDirection dir, TileColor color)

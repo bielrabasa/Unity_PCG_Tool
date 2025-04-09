@@ -30,27 +30,27 @@ MonoBehaviour:
     canRotateZ: 0
     Up: 0
     Down: 0
-    Left: 0
-    Right: 0
-    Forward: 0
-    Back: 0
+    Left: 2048
+    Right: 4
+    Forward: 2048
+    Back: 4
   - canMirror: 0
     canRotateX: 0
     canRotateY: 0
     canRotateZ: 0
     Up: 0
     Down: 0
-    Left: 0
-    Right: 0
-    Forward: 0
-    Back: 0
+    Left: 2048
+    Right: 2048
+    Forward: 4
+    Back: 4
   - canMirror: 0
     canRotateX: 0
     canRotateY: 0
     canRotateZ: 0
     Up: 0
     Down: 0
-    Left: 0
+    Left: 4
     Right: 0
-    Forward: 0
-    Back: 0
+    Forward: 2048
+    Back: 4

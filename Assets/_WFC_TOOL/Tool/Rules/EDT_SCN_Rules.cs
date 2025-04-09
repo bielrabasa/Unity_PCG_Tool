@@ -28,6 +28,8 @@ namespace PCG_Tool
         List<EDT_GUI_FacePreview> ghostFaces = new();
         Mesh ghostFaceMesh;
         [SerializeField] Material ghostFaceMat;
+        Material selectedColorMat;
+        private const float GHOST_FACE_ALPHA = 0.4f;
         private float ghostFaceSeparation = 0.2f;
 
         //Color picker
@@ -165,7 +167,7 @@ namespace PCG_Tool
                 DestroyImmediate(_previewParent);
             }
             _previewParent = new GameObject("TilePreview_EditorOnly");
-            _previewParent.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy;
+            _previewParent.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
 
             //Calculate tile distribution
             Vector3 tileSize = tileSet.tileSize;
@@ -179,7 +181,7 @@ namespace PCG_Tool
                 if (prefab == null) continue;
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-                instance.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+                instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
                 instance.transform.position = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
                 instance.transform.SetParent(_previewParent.transform);
                 instance.layer = _previewLayer;
@@ -277,10 +279,10 @@ namespace PCG_Tool
                 Vector3.back
             };
 
-            foreach (var normal in normals)
-            {
+            for (int i = 0; i < normals.Length; i++) {
+                var normal = normals[i];
                 Vector3 facePos = tilePos + Vector3.Scale(normal, half);
-                ghostFaces.Add(new EDT_GUI_FacePreview(facePos + (normal * ghostFaceSeparation), normal, tileId));
+                ghostFaces.Add(new EDT_GUI_FacePreview(facePos + (normal * ghostFaceSeparation), normal, tileId, (FaceDirection)i));
             }
         }
 
@@ -290,28 +292,58 @@ namespace PCG_Tool
 
             //Draw ghostfaces
             Event e = Event.current;
-            Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+            Ray ray = new Ray();
+            bool click = false;
+            if(e.type == EventType.MouseDown && e.button == 0 && !e.alt)
+            {
+                ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+                click = true;
+            }
 
             if (ghostFaceMesh == null || ghostFaceMat == null || ghostFaces == null) return;
 
             Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
-            ghostFaceMat.SetPass(0);
+
+            //Ensure selectedColorMaterial is correct
+            ProcessColorChange(selectedColorIndex);
+
+            //GhostFace Draw & Click
+            EDT_GUI_FacePreview closestFace = null;
+            float closestDistance = float.MaxValue;
 
             foreach (var face in ghostFaces)
             {
-                //Color from pick TODO: Only if they have it
-                //ghostFaceMat.color = TileRule.GetColor(selectedColorIndex);
+                //Has the selected color
+                if (rules.tileRules[face.ownerId].HasColor(face.dir, TileRule.GetTileColorByIndex(selectedColorIndex)))
+                {
+                    selectedColorMat.SetPass(0);
+                }
+                else
+                {
+                    ghostFaceMat.SetPass(0);
+                }
 
+                //Draw face
                 Vector3 faceScale = EDT_GUI_FacePreview.GetScaleForNormal(face.rotation * Vector3.forward, rules.tileSet.tileSize);
                 Matrix4x4 matrix = Matrix4x4.TRS(face.position, face.rotation, faceScale);
                 Graphics.DrawMeshNow(ghostFaceMesh, matrix);
 
-                if (e.type == EventType.MouseDown && e.button == 0 && !e.alt && face.IsHitByRay(ray, rules.tileSet.tileSize))
+                //Check closest click
+                if (click && face.IsHitByRay(ray, rules.tileSet.tileSize, out float distance))
                 {
-                    ProcessTileClick(face);
-                    e.Use();
-                    break;
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestFace = face;
+                    }
                 }
+            }
+
+            //Process click for closest face
+            if (closestFace != null)
+            {
+                ProcessTileClick(closestFace);
+                e.Use();
             }
         }
 
@@ -335,33 +367,32 @@ namespace PCG_Tool
             {
                 Rect rect = GUILayoutUtility.GetRect(buttonSize, buttonSize, GUILayout.ExpandWidth(false));
 
-                // Fondo del botón: el color de la tile
+                //Button texture
                 GUI.DrawTexture(rect, colorTextures[i]);
 
-                // Si está seleccionado, dibujamos borde
+                //If selected, draw border
                 if (selectedColorIndex == i)
                 {
                     Color borderColor = Color.white;
                     float thickness = 2f;
 
-                    // Top
+                    //Top
                     EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, thickness), borderColor);
-                    // Bottom
+                    //Bottom
                     EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), borderColor);
-                    // Left
+                    //Left
                     EditorGUI.DrawRect(new Rect(rect.x, rect.y, thickness, rect.height), borderColor);
-                    // Right
+                    //Right
                     EditorGUI.DrawRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), borderColor);
                 }
 
-                // Botón invisible encima para detección de clics
+                //Invisible button on top to detect click
                 if (GUI.Button(rect, GUIContent.none, GUIStyle.none))
                 {
-                    selectedColorIndex = i;
+                    ProcessColorChange(i);
                 }
             }
 
-            GUI.backgroundColor = Color.white; // Reset color
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
 
@@ -386,10 +417,24 @@ namespace PCG_Tool
             }
         }
 
+        private void ProcessColorChange(int buttonIndex)
+        {
+            selectedColorIndex = buttonIndex;
+
+            //Change Material Information
+            if (selectedColorMat == null)
+            {
+                selectedColorMat = new Material(ghostFaceMat);
+            }
+
+            Color col = TileRule.GetColor(selectedColorIndex);
+            col.a = GHOST_FACE_ALPHA;
+            selectedColorMat.color = col;
+        }
+
         void ProcessTileClick(EDT_GUI_FacePreview face)
         {
-            //TODO
-            Debug.Log("TileClicked: " + face.ownerId);
+            rules.tileRules[face.ownerId].SwitchColorToFace(face.dir, TileRule.GetTileColorByIndex(selectedColorIndex));
         }
     }
 

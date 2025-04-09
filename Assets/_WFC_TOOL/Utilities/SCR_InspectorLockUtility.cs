@@ -14,7 +14,6 @@ public static class SCR_InspectorLockUtility
             var property = inspectorType.GetProperty("isLocked", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             property?.SetValue(window, isLocked, null);
 
-            // Forzar el repaint
             var repaint = inspectorType.GetMethod("Repaint", BindingFlags.Instance | BindingFlags.Public);
             repaint?.Invoke(window, null);
         }

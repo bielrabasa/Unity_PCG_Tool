@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace PCG_Tool
@@ -9,12 +8,14 @@ namespace PCG_Tool
         public Vector3 position;
         public Quaternion rotation;
         public short ownerId;
+        public FaceDirection dir;
 
-        public EDT_GUI_FacePreview(Vector3 position, Vector3 normal, short ownerId)
+        public EDT_GUI_FacePreview(Vector3 position, Vector3 normal, short ownerId, FaceDirection dir)
         {
             this.position = position;
             this.rotation = Quaternion.LookRotation(normal);
             this.ownerId = ownerId;
+            this.dir = dir;
         }
 
         public static Vector3 GetScaleForNormal(Vector3 normal, Vector3 tileSize)
@@ -31,18 +32,25 @@ namespace PCG_Tool
             return Vector3.one;
         }
 
-        public bool IsHitByRay(Ray ray, Vector3 tileSize)
+        public bool IsHitByRay(Ray ray, Vector3 tileSize, out float distance)
         {
-            //TODO: Click not working always correct
+            distance = float.MaxValue;
 
             Plane plane = new Plane(rotation * Vector3.forward, position);
-            if (plane.Raycast(ray, out float distance))
+            if (plane.Raycast(ray, out float d))
             {
-                Vector3 hit = ray.GetPoint(distance);
+                Vector3 hit = ray.GetPoint(d);
                 Vector3 local = Quaternion.Inverse(rotation) * (hit - position);
-                Vector2 halfSize = new Vector2(tileSize.x / 2, tileSize.y / 2);
 
-                return Mathf.Abs(local.x) <= halfSize.x && Mathf.Abs(local.y) <= halfSize.y;
+                Vector3 sizeLocal = Quaternion.Inverse(rotation) * tileSize;
+                float halfX = Mathf.Abs(sizeLocal.x) * 0.5f;
+                float halfY = Mathf.Abs(sizeLocal.y) * 0.5f;
+
+                if(Mathf.Abs(local.x) <= halfX && Mathf.Abs(local.y) <= halfY)
+                {
+                    distance = d;
+                    return true;
+                }
             }
             return false;
         }
