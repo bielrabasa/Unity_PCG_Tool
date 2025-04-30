@@ -9,7 +9,7 @@ namespace PCG_Tool
     public class SBO_RepresentationModel : ScriptableObject
     {
         public SBO_TileSet tileSet;
-        private Vector3Int gridSize;
+        private Vector3Int gridSize = Vector3Int.one;
         [SerializeField] private TileInfo[] tiles;
         public event Action OnModelChanged;
 

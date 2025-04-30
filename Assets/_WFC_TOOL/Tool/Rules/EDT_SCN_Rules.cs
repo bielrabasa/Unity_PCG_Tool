@@ -77,6 +77,9 @@ namespace PCG_Tool
                     ShowTilesPreview(setupCamera: false);
                 }
             }
+
+            //Color compatibility matrix
+            InspectorColorCompatibilityMatrix();
         }
 
         private void DrawTileSetInspector()
@@ -353,8 +356,7 @@ namespace PCG_Tool
 
             float buttonSize = 24f;
             float spacing = 4f;
-            int colorCount = 16;
-            float totalWidth = (buttonSize + spacing) * colorCount - spacing;
+            float totalWidth = (buttonSize + spacing) * SBO_Rules.MATRIX_COLOR_COUNT - spacing;
             float startX = (Screen.width - totalWidth) * 0.5f;
             float y = 10f;
 
@@ -363,7 +365,7 @@ namespace PCG_Tool
 
             EnsureColorTextures();
 
-            for (int i = 0; i < colorCount; i++)
+            for (int i = 0; i < SBO_Rules.MATRIX_COLOR_COUNT; i++)
             {
                 Rect rect = GUILayoutUtility.GetRect(buttonSize, buttonSize, GUILayout.ExpandWidth(false));
 
@@ -403,11 +405,11 @@ namespace PCG_Tool
         {
             if (colorTextures != null) return;
 
-            colorTextures = new Texture2D[16];
+            colorTextures = new Texture2D[SBO_Rules.MATRIX_COLOR_COUNT];
 
             colorTextures[0] = SCR_CheckerTextureUtility.GetCheckerTexture();
 
-            for (int i = 1; i < 16; i++)
+            for (int i = 1; i < SBO_Rules.MATRIX_COLOR_COUNT; i++)
             {
                 Color col = TileRule.GetColor(i);
                 Texture2D tex = new Texture2D(1, 1);
@@ -435,6 +437,65 @@ namespace PCG_Tool
         void ProcessTileClick(EDT_GUI_FacePreview face)
         {
             rules.tileRules[face.ownerId].SwitchColorToFace(face.dir, TileRule.GetTileColorByIndex(selectedColorIndex));
+        }
+
+        void InspectorColorCompatibilityMatrix()
+        {
+            GUI.backgroundColor = STY_Style.Variable_Color;
+
+            EditorGUILayout.Space(10);
+            EditorGUILayout.LabelField("Color Compatibility Matrix", EditorStyles.boldLabel);
+
+            SBO_Rules rules = (SBO_Rules)target;
+
+            EnsureColorTextures();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("", GUILayout.Width(14)); //Empty space before colors
+
+            for (int x = 0; x < SBO_Rules.MATRIX_COLOR_COUNT; x++)
+            {
+                Rect rect = GUILayoutUtility.GetRect(18, 15, GUILayout.Width(18), GUILayout.Height(15));
+                rect.width -= 3;
+
+                EditorGUI.DrawPreviewTexture(rect, colorTextures[x]);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            for (int y = 0; y < SBO_Rules.MATRIX_COLOR_COUNT; y++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.BeginVertical(GUILayout.Width(15));
+                GUILayout.Space(3);
+                Rect rect = GUILayoutUtility.GetRect(15, 15, GUILayout.Width(15), GUILayout.Height(15));
+                EditorGUI.DrawPreviewTexture(rect, colorTextures[y]);
+                EditorGUILayout.EndVertical();
+
+
+                for (int x = 0; x < SBO_Rules.MATRIX_COLOR_COUNT; x++)
+                {
+                    if(x == 0 && y == 0)
+                    {
+                        GUI.enabled = false;
+                        EditorGUILayout.Toggle(true, GUILayout.Width(15));
+                        GUI.enabled = true;
+
+                        continue;
+                    }
+
+                    bool compatible = rules.AreCompatible((TileColor)(1 << x), (TileColor)(1 << y));
+                    bool newCompatible = EditorGUILayout.Toggle(compatible, GUILayout.Width(15));
+
+                    if (newCompatible != compatible)
+                    {
+                        Undo.RecordObject(rules, "Toggle Color Compatibility");
+                        rules.SwitchCompatibility((TileColor)(1 << x), (TileColor)(1 << y));
+                        EditorUtility.SetDirty(rules);
+                    }
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
         }
     }
 

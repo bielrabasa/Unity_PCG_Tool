@@ -17,7 +17,13 @@ namespace PCG_Tool
 
             //Inspector
             model.tileSet = (SBO_TileSet)EditorGUILayout.ObjectField("Tile Set", model.tileSet, typeof(SBO_TileSet), false);
-            model.GridSize = EditorGUILayout.Vector3IntField("Grid Size", model.GridSize);
+            Vector3Int newGridSize = EditorGUILayout.Vector3IntField("Grid Size", model.GridSize);
+
+            if(newGridSize.x <= 0) newGridSize.x = 1;
+            if(newGridSize.y <= 0) newGridSize.y = 1;
+            if(newGridSize.z <= 0) newGridSize.z = 1;
+
+            model.GridSize = newGridSize;
 
             EditorGUILayout.Space(10);
             
