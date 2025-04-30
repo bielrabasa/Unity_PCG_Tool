@@ -36,6 +36,10 @@ namespace PCG_Tool
         private int selectedColorIndex = 0;
         private static Texture2D[] colorTextures;
 
+        //Constraint selection
+        private bool constraintMenu = false;
+        private Vector3[] constraintPositions;
+
         public override void OnInspectorGUI()
         {
             rules = (SBO_Rules)target;
@@ -60,26 +64,48 @@ namespace PCG_Tool
                     ShowTilesPreview();
             }
 
-            //TileSeparation 
+            //Previewing Menu 
             if (isPreviewing)
             {
+                //Constraint and Color picking menus
+                GUILayout.BeginHorizontal();
+                GUI.backgroundColor = !constraintMenu ? STY_Style.Activated_Color : STY_Style.Deactivated_Color;
+                if (GUILayout.Button("Color Picking", STY_Style.Button_Layout))
+                {
+                    if(constraintMenu) constraintMenu = false;
+                    RefreshTilePreview();
+                }
+
+                GUI.backgroundColor = constraintMenu ? STY_Style.Activated_Color : STY_Style.Deactivated_Color;
+                if (GUILayout.Button("Set Constraints", STY_Style.Button_Layout))
+                {
+                    if (!constraintMenu) constraintMenu = true;
+                    RefreshTilePreview();
+                }
+                GUILayout.EndHorizontal();
+
                 EditorGUILayout.Space(20);
 
                 GUI.backgroundColor = STY_Style.Variable_Color;
                 float newTilePreviewSeparation = EditorGUILayout.Slider("Tile Separation", tilePreviewSeparation, 0f, 10f);
-                float newGhostFaceSeparation = EditorGUILayout.Slider("GhostFace Separation", ghostFaceSeparation, 0f, 1f);
+                float newGhostFaceSeparation = constraintMenu? ghostFaceSeparation : EditorGUILayout.Slider("GhostFace Separation", ghostFaceSeparation, 0f, 1f);
                 
                 if (tilePreviewSeparation != newTilePreviewSeparation || ghostFaceSeparation != newGhostFaceSeparation)
                 {
                     tilePreviewSeparation = newTilePreviewSeparation;
                     ghostFaceSeparation = newGhostFaceSeparation;
-                    CleanupPreview(cleanCamera: false);
-                    ShowTilesPreview(setupCamera: false);
+                    RefreshTilePreview();
                 }
             }
 
             //Color compatibility matrix
             InspectorColorCompatibilityMatrix();
+        }
+
+        private void RefreshTilePreview()
+        {
+            CleanupPreview(cleanCamera: false);
+            ShowTilesPreview(setupCamera: false);
         }
 
         private void DrawTileSetInspector()
@@ -131,6 +157,15 @@ namespace PCG_Tool
 
             rules.tileRules = new TileRule[rules.tileSet.GetTileCount()];
 
+            //Setup element 0 (air)
+            rules.tileRules[0].constraints = TileConstraints.None;
+            rules.tileRules[0].Up = TileColor.Air;
+            rules.tileRules[0].Down = TileColor.Air;
+            rules.tileRules[0].Left = TileColor.Air;
+            rules.tileRules[0].Right = TileColor.Air;
+            rules.tileRules[0].Forward = TileColor.Air;
+            rules.tileRules[0].Back = TileColor.Air;
+
             EditorUtility.SetDirty(rules);
         }
 
@@ -151,9 +186,16 @@ namespace PCG_Tool
 
             SetupObjects(rules.tileSet);
 
-            SetupGhostFaceData();
+            if (constraintMenu)
+            {
+                SetupContraintMenu();
+            }
+            else
+            {
+                SetupGhostFaceData();
+            }
 
-            if(setupCamera) SetupCamera();
+            if (setupCamera) SetupCamera();
 
             isPreviewing = true;
 
@@ -174,18 +216,21 @@ namespace PCG_Tool
 
             //Calculate tile distribution
             Vector3 tileSize = tileSet.tileSize;
-            int rowSize = Mathf.CeilToInt(Mathf.Sqrt(tileSet.GetTileCount()));
+            int rowSize = Mathf.CeilToInt(Mathf.Sqrt(tileSet.GetTileCount() - 1));
             tilePreviewCenter = new Vector3((rowSize - 1) * (tileSize.x + tilePreviewSeparation) / 2f, 0, (rowSize - 1) * (tileSize.z + tilePreviewSeparation) / 2f);
 
+            //Create tilePositions
+            constraintPositions = new Vector3[tileSet.GetTileCount()];
+
             //Intanciate tiles
-            for (int i = 0; i < tileSet.GetTileCount(); i++)
+            for (int i = 1; i < tileSet.GetTileCount(); i++)
             {
                 GameObject prefab = tileSet.GetPrefab((short)(i));
                 if (prefab == null) continue;
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
-                instance.transform.position = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
+                instance.transform.position = new Vector3(((i-1) % rowSize) * (tileSize.x + tilePreviewSeparation), 0, ((i-1) / rowSize) * (tileSize.z + tilePreviewSeparation));
                 instance.transform.SetParent(_previewParent.transform);
                 instance.layer = _previewLayer;
 
@@ -196,6 +241,46 @@ namespace PCG_Tool
 
                 //Generate ghost faces
                 GenerateFacesForTile((short)i, instance.transform.position, tileSet.tileSize);
+
+                //Generation tile positions for constraints
+                constraintPositions[i] = instance.transform.position + Vector3.up * tileSet.tileSize.y;
+            }
+        }
+
+        private void SetupContraintMenu()
+        {
+            SceneView.duringSceneGui -= DrawConstraintsGUI;
+            SceneView.duringSceneGui += DrawConstraintsGUI;
+        }
+
+        private void DrawConstraintsGUI(SceneView sv)
+        {
+            if(constraintPositions == null || constraintPositions.Length == 0) return;
+
+            for (int i = 1; i < constraintPositions.Length; i++)
+            {
+                TileRule rule = rules.tileRules[i];
+
+                Handles.BeginGUI();
+
+                //Convert world pos to screen pos
+                Vector2 guiPos = HandleUtility.WorldToGUIPoint(constraintPositions[i]);
+                
+                GUILayout.BeginArea(new Rect(guiPos.x - 30, guiPos.y - 75, 60, 75), GUI.skin.box);
+                bool newAllowMirroring = GUILayout.Toggle((rule.constraints & TileConstraints.AllowMirror) != 0, "Mirror");
+                bool newAllowRotX = GUILayout.Toggle((rule.constraints & TileConstraints.Allow_X_Rotation) != 0, "X rot");
+                bool newAllowRotY = GUILayout.Toggle((rule.constraints & TileConstraints.Allow_Y_Rotation) != 0, "Y rot");
+                bool newAllowRotZ = GUILayout.Toggle((rule.constraints & TileConstraints.Allow_Z_Rotation) != 0, "Z rot");
+                rule.constraints =
+                    (newAllowMirroring ? TileConstraints.AllowMirror : 0) |
+                    (newAllowRotX ? TileConstraints.Allow_X_Rotation : 0) |
+                    (newAllowRotY ? TileConstraints.Allow_Y_Rotation : 0) |
+                    (newAllowRotZ ? TileConstraints.Allow_Z_Rotation : 0);
+                GUILayout.EndArea();
+
+                Handles.EndGUI();
+
+                rules.tileRules[i] = rule;
             }
         }
 
@@ -241,6 +326,7 @@ namespace PCG_Tool
             }
             ghostFaces.Clear();
             SceneView.duringSceneGui -= GhostFacePaintGUI;
+            SceneView.duringSceneGui -= DrawConstraintsGUI;
 
             if(cleanCamera)
             {

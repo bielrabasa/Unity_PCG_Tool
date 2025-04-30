@@ -8,7 +8,7 @@ namespace PCG_Tool
     public class SBO_TileSet : ScriptableObject
     {
         public Vector3 tileSize = Vector3.one;
-        [SerializeField] private List<GameObject> tiles;
+        public List<GameObject> tiles;
 
         public GameObject GetPrefab(short id)
         {

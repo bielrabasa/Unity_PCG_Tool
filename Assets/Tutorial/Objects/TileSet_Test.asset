@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: TileSet_Test
   m_EditorClassIdentifier: 
   tileSize: {x: 1, y: 1, z: 1}
-  tiles: []
+  tiles:
+  - {fileID: 0}
+  - {fileID: 919132149155446097, guid: 4a23958786b780549bcfbc505dd6954c, type: 3}
+  - {fileID: 919132149155446097, guid: 4fb897da3c36e24468ffc98bf9b85edc, type: 3}

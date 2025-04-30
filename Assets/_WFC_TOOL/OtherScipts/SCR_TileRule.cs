@@ -7,10 +7,7 @@ namespace PCG_Tool
     [System.Serializable]
     public struct TileRule
     {
-        public bool canMirror;
-        public bool canRotateX;
-        public bool canRotateY;
-        public bool canRotateZ;
+        public TileConstraints constraints;
 
         public TileColor Up;
         public TileColor Down;
@@ -123,5 +120,15 @@ namespace PCG_Tool
         Lime = 1 << 13,
         Indigo = 1 << 14,
         Teal = 1 << 15
+    }
+
+    [System.Flags]
+    public enum TileConstraints : ushort
+    {
+        None = 0,
+        AllowMirror = 1 << 0,
+        Allow_X_Rotation = 1 << 1,
+        Allow_Y_Rotation = 1 << 2,
+        Allow_Z_Rotation = 1 << 3,
     }
 }
