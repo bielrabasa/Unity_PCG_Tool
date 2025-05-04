@@ -39,7 +39,7 @@ MonoBehaviour:
     Up: 0
     Down: 0
     Left: 4
-    Right: 0
+    Right: 4
     Forward: 2048
     Back: 4
   colorTable: 0008020004000800100020004000800000010002000401080010002000400080
