@@ -88,6 +88,7 @@ namespace PCG_Tool
                 case FaceDirection.Back: Back = value; break;
             }
         }
+        
     }
 
     public enum FaceDirection

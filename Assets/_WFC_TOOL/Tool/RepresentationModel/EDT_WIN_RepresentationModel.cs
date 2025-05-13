@@ -50,7 +50,7 @@ namespace PCG_Tool
                     {
                         Undo.RecordObject(model, "Change Tile");
                         model.SetTile(x, currentLayer, z, new TileInfo(selectedTileId, tileOrientation));
-                        
+
                         EditorUtility.SetDirty(model); // Modify object
                     }
                 }

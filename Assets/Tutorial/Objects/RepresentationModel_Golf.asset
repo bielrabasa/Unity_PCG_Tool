@@ -14,53 +14,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSet: {fileID: 11400000, guid: 5acc4d12061d1c043bf6ab6c6cfaee64, type: 2}
   tiles:
-  - id: 1
-    orient: 24
+  - id: 0
+    orient: 0
   - id: 2
-    orient: 8
-  - id: 2
-    orient: 8
-  - id: 2
-    orient: 8
-  - id: 1
-    orient: 16
-  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
     orient: 0
   - id: 1
-    orient: 16
-  - id: 0
     orient: 0
   - id: 0
     orient: 0
   - id: 2
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 24
-  - id: 3
-    orient: 16
+    orient: 8
   - id: 3
     orient: 8
   - id: 0
     orient: 0
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 2
+    orient: 0
   - id: 0
     orient: 0
   - id: 1
     orient: 0
-  - id: 3
+  - id: 1
+    orient: 16
+  - id: 0
+    orient: 8
+  - id: 0
     orient: 0
+  - id: 2
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 1
+    orient: 0
+  - id: 2
+    orient: 8
+  - id: 2
+    orient: 8
   - id: 1
     orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0

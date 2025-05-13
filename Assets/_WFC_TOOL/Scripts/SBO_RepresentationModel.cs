@@ -24,14 +24,31 @@ namespace PCG_Tool
                 }
             }
         }
-
+        
 
         private void OnEnable()
         {
+            //TODO: Erase, only testing
+            if (tiles == null)
+            {
+                Debug.LogWarning("Initialising Grid in Representation Model because tiles array is null.");
+                InitializeGrid();
+            }
+            else if (tiles.Length != gridSize.x * gridSize.y * gridSize.z)
+            {
+                Debug.LogWarning("Initialising Grid in Representation Model because tiles array size is different than gridSize. " +
+                    "GridSize: " + gridSize + "  tilesArrayLength: " + tiles.Length);
+                InitializeGrid();
+            }
+
+            /*
+            
             if (tiles == null || tiles.Length != gridSize.x * gridSize.y * gridSize.z)
             {
                 InitializeGrid();
             }
+            
+             */
         }
 
         private void InitializeGrid()

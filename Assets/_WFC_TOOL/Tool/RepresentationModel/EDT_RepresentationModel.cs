@@ -23,7 +23,7 @@ namespace PCG_Tool
             if(newGridSize.y <= 0) newGridSize.y = 1;
             if(newGridSize.z <= 0) newGridSize.z = 1;
 
-            model.GridSize = newGridSize;
+            if(model.GridSize != newGridSize) model.GridSize = newGridSize;
 
             EditorGUILayout.Space(10);
             
