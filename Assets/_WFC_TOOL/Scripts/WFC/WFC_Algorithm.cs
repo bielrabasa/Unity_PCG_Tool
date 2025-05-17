@@ -4,11 +4,13 @@ using UnityEngine;
 public class WFC_Algorithm
 {
     private GridCell[,,] _gridCells;
+    private Vector3Int _gridSize;
     private bool _debugMode;
 
-    public WFC_Algorithm(GridCell[,,] gridCells) 
+    public WFC_Algorithm(GridCell[,,] gridCells, Vector3Int gridSize) 
     { 
         this._gridCells = gridCells;
+        this._gridSize = gridSize;
     }
 
     public void GenerateStandard()
@@ -16,6 +18,7 @@ public class WFC_Algorithm
         _debugMode = false;
 
         //TODO
+        Loop();
     }
 
     public void GenerateDebugMode()
@@ -39,6 +42,21 @@ public class WFC_Algorithm
     //-------------------------------------------------------
     //                      WFC STEPS
     //-------------------------------------------------------
+
+    void Loop()
+    {
+        //TODO: Algorithm loop
+        for (int i = 0; i < _gridSize.x; i++)
+        {
+            for (int j = 0; j < _gridSize.y; j++)
+            {
+                for (int k = 0; k < _gridSize.z; k++)
+                {
+                    _gridCells[i, j, k].CollapseCell();
+                }
+            }
+        }
+    }
 
     void CollapseLeastEntropy()
     {

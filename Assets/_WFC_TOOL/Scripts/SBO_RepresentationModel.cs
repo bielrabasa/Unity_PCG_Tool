@@ -26,36 +26,19 @@ namespace PCG_Tool
         }
         
 
-        private void OnEnable()
+        private void Awake()
         {
-            //TODO: Erase, only testing
-            if (tiles == null)
-            {
-                Debug.LogWarning("Initialising Grid in Representation Model because tiles array is null.");
-                InitializeGrid();
-            }
-            else if (tiles.Length != gridSize.x * gridSize.y * gridSize.z)
-            {
-                Debug.LogWarning("Initialising Grid in Representation Model because tiles array size is different than gridSize. " +
-                    "GridSize: " + gridSize + "  tilesArrayLength: " + tiles.Length);
-                InitializeGrid();
-            }
-
-            /*
-            
             if (tiles == null || tiles.Length != gridSize.x * gridSize.y * gridSize.z)
             {
                 InitializeGrid();
             }
-            
-             */
         }
 
         private void InitializeGrid()
         {
             tiles = new TileInfo[gridSize.x * gridSize.y * gridSize.z];
 
-            // Opcional: Inicializar con valores por defecto
+            // Optional: Inicializar con valores por defecto
             for (int i = 0; i < tiles.Length; i++)
             {
                 tiles[i] = new TileInfo(0); // ID 0 = vacío

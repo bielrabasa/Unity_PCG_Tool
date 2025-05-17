@@ -7,15 +7,15 @@ namespace PCG_Tool
 
     public class TileVariant
     {
-        TileInfo tileInfo;
-        float weight;
+        public TileInfo tileInfo;
+        public float weight;
 
-        TileColor Up;
-        TileColor Down;
-        TileColor Left;
-        TileColor Right;
-        TileColor Forward;
-        TileColor Back;
+        public TileColor Up;
+        public TileColor Down;
+        public TileColor Left;
+        public TileColor Right;
+        public TileColor Forward;
+        public TileColor Back;
 
         public TileVariant() { }
         public TileVariant(TileVariant tileVariant)
@@ -36,45 +36,31 @@ namespace PCG_Tool
         {
             List<TileVariant> variants = new List<TileVariant>();
 
-            //Possible axis vectors for each direction TODO: Check if possible to just use one array
-            Vector3[] ups = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-            Vector3[] forwards = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-            //ups will be Vector3.Up in case of only rotate Y
-            //forwards will be Vector3.Forward in case of only rotate Z
-            //right will be Vector3.Right in case of only rotate X (this has to be checked appart
-
             //Original TileColors
             TileColor[] originalTileColors = { rule.Up, rule.Down, rule.Left, rule.Right, rule.Forward, rule.Back };
             TileColor[] originalMirroredColors = { rule.Up, rule.Down, rule.Right, rule.Left, rule.Forward, rule.Back };
 
-            foreach (Vector3 upDir in ups)
+            List<Quaternion> rotations = rule.GetPossibleRotations();
+
+            foreach(Quaternion rot in rotations)
             {
-                foreach (Vector3 forwardDir in forwards)
+                //Rotated Variant
+                TileVariant variant = new TileVariant();
+                variant.tileInfo.id = tileId;
+
+                ProcessTileRotation(rot, originalTileColors, ref variant);
+                variants.Add(variant);
+
+                //Mirrored Variant
+                if ((rule.constraints & TileConstraints.AllowMirror) != 0)
                 {
-                    //Ignore non-orthogonal directions
-                    float dot = Vector3.Dot(upDir, forwardDir);
-                    if (dot > 0.1f || dot < -0.1f) continue;
+                    TileVariant mirroredVariant = new TileVariant();
+                    mirroredVariant.tileInfo.id = tileId;
 
-                    Quaternion rot = Quaternion.LookRotation(forwardDir, upDir);
+                    ProcessTileRotation(rot, originalMirroredColors, ref mirroredVariant);
+                    mirroredVariant.tileInfo.orient |= TileOrientation.Mirrored;
 
-                    //Rotated Variant
-                    TileVariant variant = new TileVariant();
-                    variant.tileInfo.id = tileId;
-
-                    ProcessTileRotation(rot, originalTileColors, ref variant);
-                    variants.Add(variant);
-
-                    //Mirrored Variant
-                    if ((rule.constraints & TileConstraints.AllowMirror) != 0)
-                    {
-                        TileVariant mirroredVariant = new TileVariant();
-                        mirroredVariant.tileInfo.id = tileId;
-
-                        ProcessTileRotation(rot, originalMirroredColors, ref mirroredVariant);
-                        mirroredVariant.tileInfo.orient |= TileOrientation.Mirrored;
-
-                        variants.Add(mirroredVariant);
-                    }
+                    variants.Add(mirroredVariant);
                 }
             }
             

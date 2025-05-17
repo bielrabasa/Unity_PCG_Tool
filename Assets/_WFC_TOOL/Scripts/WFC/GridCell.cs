@@ -23,6 +23,7 @@ namespace PCG_Tool
         {
             //TODO: backtracking will probably change this (first will erase chosen variant from the possible variants)
             //TODO: use custom-made randomiser?
+            //TODO: use weights
 
             chosenVariant = possibleVariants[Random.Range(0, possibleVariants.Count - 1)];
             collapsed = true;

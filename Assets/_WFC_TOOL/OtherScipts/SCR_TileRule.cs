@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PCG_Tool
@@ -8,6 +10,7 @@ namespace PCG_Tool
     public struct TileRule
     {
         public TileConstraints constraints;
+        public float weight; 
 
         public TileColor Up;
         public TileColor Down;
@@ -89,6 +92,55 @@ namespace PCG_Tool
             }
         }
         
+        public List<Quaternion> GetPossibleRotations()
+        {
+            List<Quaternion> rot = new List<Quaternion>();
+
+            //NO ROTATIONS
+            if (constraints == TileConstraints.None)
+            {
+                rot.Add(Quaternion.identity);
+                return rot;
+            }
+
+            //Only X rotation
+            if (constraints == TileConstraints.Allow_X_Rotation)
+            {
+                for (int i = 0; i < 4; i++) rot.Add(Quaternion.Euler(i * 90, 0, 0));
+                return rot;
+            }
+
+            Vector3[] ups = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+            Vector3[] forwards = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+
+            //Only Y rotation
+            if (constraints == TileConstraints.Allow_Y_Rotation)
+            {
+                ups = new Vector3[] { Vector3.up };
+            }
+
+            //Only Z rotation
+            else if (constraints == TileConstraints.Allow_Z_Rotation)
+            {
+                forwards = new Vector3[] { Vector3.forward };
+            }
+
+            //All rotations
+            foreach (Vector3 upDir in ups)
+            {
+                foreach (Vector3 forwardDir in forwards)
+                {
+                    //Ignore non-orthogonal directions
+                    float dot = Vector3.Dot(upDir, forwardDir);
+                    if (dot > 0.1f || dot < -0.1f) continue;
+
+                    //Calculate complete rotation
+                    rot.Add(Quaternion.LookRotation(forwardDir, upDir));
+                }
+            }
+
+            return rot;
+        }
     }
 
     public enum FaceDirection
@@ -124,7 +176,7 @@ namespace PCG_Tool
     }
 
     [System.Flags]
-    public enum TileConstraints : ushort
+    public enum TileConstraints : byte
     {
         None = 0,
         AllowMirror = 1 << 0,

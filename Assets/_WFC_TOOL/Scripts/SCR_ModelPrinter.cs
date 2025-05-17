@@ -42,9 +42,9 @@ namespace PCG_Tool
             tileSet = model.tileSet;
         }
 
-        private void PrintModel()
+        public void PrintModel()
         {
-            if (model == null || model.tileSet == null)
+            if (model == null || tileSet == null)
             {
                 Debug.LogError("ModelPrinter: RepresentationModel or TileSet is missing.");
                 return;

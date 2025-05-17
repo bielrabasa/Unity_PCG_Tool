@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
+using PCG_Tool;
 
 public class ShowAllPossibleRotations : EditorWindow
 {
@@ -41,12 +43,20 @@ public class ShowAllPossibleRotations : EditorWindow
 
         Transform parent = new GameObject("Rotation Combinations").transform;
 
-        //Rotation X
         Vector3 pos = Vector3.zero;
-        for (int i = 0; i < 4; i++) {
 
-            Quaternion rot = Quaternion.Euler(i * 90, 0, 0);
+        TileRule rule = new TileRule();
+        rule.constraints =
+            (allowXRot ? TileConstraints.Allow_X_Rotation : TileConstraints.None) |
+            (allowYRot ? TileConstraints.Allow_Y_Rotation : TileConstraints.None) |
+            (allowZRot ? TileConstraints.Allow_Z_Rotation : TileConstraints.None);
 
+        List<Quaternion> rotations = rule.GetPossibleRotations();
+
+        Debug.Log("Possible Rotations: " + rotations.Count);
+
+        foreach (Quaternion rot in rotations)
+        {
             //Calculate position
             Instantiate(selectedObjects[0], pos, rot, parent);
 
@@ -57,41 +67,6 @@ public class ShowAllPossibleRotations : EditorWindow
             }
 
             pos.x += distance;
-        }
-
-        return;
-
-
-        Vector3[] ups = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-        Vector3[] forwards = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-
-        //TODO: Solve for only X rotation
-        //Y rot -> ups = Vector.Up
-        //Z rot -> forwards = Vector.Forward
-
-        //Vector3 pos = Vector3.zero;
-        foreach (Vector3 upDir in ups)
-        {
-            foreach (Vector3 forwardDir in forwards)
-            {
-                //Ignore non-orthogonal directions
-                float dot = Vector3.Dot(upDir, forwardDir);
-                if (dot > 0.1f || dot < -0.1f) continue;
-
-                //Calculate complete rotation
-                Quaternion rot = Quaternion.LookRotation(forwardDir, upDir);
-
-                //Calculate position
-                Instantiate(selectedObjects[0], pos, rot, parent);
-
-                //Mirrors
-                if (allowMirror)
-                {
-                    Instantiate(selectedObjects[0], pos + Vector3.forward * distance, rot, parent).transform.localScale = new Vector3(-1, 1, 1);
-                }
-
-                pos.x += distance;
-            }
         }
     }
 }

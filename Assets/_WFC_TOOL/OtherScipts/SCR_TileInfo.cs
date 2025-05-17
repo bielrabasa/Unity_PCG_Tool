@@ -36,7 +36,7 @@ namespace PCG_Tool
         {
             TileOrientation orient = new TileOrientation();
 
-            switch(Mathf.RoundToInt(rotation.eulerAngles.x))
+            switch (Mathf.RoundToInt(rotation.eulerAngles.x))
             {
                 case 270:
                     orient |= TileOrientation.X_Rot_90 | TileOrientation.X_Rot_180;
