@@ -109,6 +109,8 @@ namespace PCG_Tool
                 variants = variants.Concat(TileVariant.GenerateVariantsFromTileRule(rules.tileRules[i], (short)i)).ToList();
             }
 
+            Debug.Log("Variant count: " +  variants.Count + " Rule count: " + rules.tileRules.Length); 
+
             return variants;
         }
 

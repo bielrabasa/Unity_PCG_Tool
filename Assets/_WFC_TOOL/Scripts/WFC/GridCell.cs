@@ -25,7 +25,7 @@ namespace PCG_Tool
             //TODO: use custom-made randomiser?
             //TODO: use weights
 
-            chosenVariant = possibleVariants[Random.Range(0, possibleVariants.Count - 1)];
+            chosenVariant = possibleVariants[Random.Range(0, possibleVariants.Count)];
             collapsed = true;
         }
     }

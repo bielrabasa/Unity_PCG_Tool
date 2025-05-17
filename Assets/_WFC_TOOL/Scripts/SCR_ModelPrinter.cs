@@ -64,7 +64,7 @@ namespace PCG_Tool
                     for (int z = 0; z < model.GridSize.z; z++)
                     {
                         TileInfo tileInfo = model.GetTile(x, y, z);
-                        if (tileInfo.id == 0) continue;  // ID 0 is empty space
+                        if (tileInfo.id == -1) continue;  // ID -1 is empty space
 
                         GameObject prefab = tileSet.GetPrefab(tileInfo.id);
                         if (prefab == null)

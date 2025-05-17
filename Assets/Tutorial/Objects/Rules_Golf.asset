@@ -14,14 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSet: {fileID: 11400000, guid: 5acc4d12061d1c043bf6ab6c6cfaee64, type: 2}
   tileRules:
-  - constraints: 0
-    Up: 0
-    Down: 0
-    Left: 0
-    Right: 0
-    Forward: 0
-    Back: 0
   - constraints: 4
+    weight: 0
     Up: 0
     Down: 0
     Left: 2048
@@ -29,6 +23,7 @@ MonoBehaviour:
     Forward: 2048
     Back: 4
   - constraints: 4
+    weight: 0
     Up: 0
     Down: 0
     Left: 2048
@@ -36,6 +31,7 @@ MonoBehaviour:
     Forward: 4
     Back: 4
   - constraints: 4
+    weight: 0
     Up: 0
     Down: 0
     Left: 4

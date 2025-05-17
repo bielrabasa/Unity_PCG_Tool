@@ -7,7 +7,7 @@ namespace PCG_Tool
     public class EDT_WIN_RepresentationModel : EditorWindow
     {
         private SBO_RepresentationModel model;
-        private short selectedTileId = 1;
+        private short selectedTileId = 0;
         private TileOrientation tileOrientation = TileOrientation.None;
         private int currentLayer = 0; // Editing grid layer
 
@@ -44,7 +44,7 @@ namespace PCG_Tool
                 for (int x = 0; x < model.GridSize.x; x++)
                 {
                     int tileId = model.GetTile(x, currentLayer, z).id;
-                    string buttonLabel = tileId > 0 ? tileId.ToString() : ".";
+                    string buttonLabel = tileId == -1 ? "." : tileId.ToString();
 
                     if (GUILayout.Button(buttonLabel, GUILayout.Width(30), GUILayout.Height(30)))
                     {
@@ -61,7 +61,7 @@ namespace PCG_Tool
 
             // Selección del Tile
             EditorGUILayout.LabelField("Select a Tile:");
-            selectedTileId = (short)EditorGUILayout.IntSlider(selectedTileId, 0, model.tileSet.GetTileCount() - 1);
+            selectedTileId = (short)EditorGUILayout.IntSlider(selectedTileId, -1, model.tileSet.GetTileCount() - 1);
 
             EditorGUILayout.LabelField("Select tile options:");
             tileOrientation = (TileOrientation)EditorGUILayout.EnumFlagsField("Orientation", tileOrientation);
@@ -71,7 +71,7 @@ namespace PCG_Tool
                 Undo.RecordObject(model, "Clear Layer");
                 for (int x = 0; x < model.GridSize.x; x++)
                     for (int z = 0; z < model.GridSize.z; z++)
-                        model.SetTile(x, currentLayer, z, new TileInfo(0));
+                        model.SetTile(x, currentLayer, z, new TileInfo(-1));
 
                 EditorUtility.SetDirty(model);
             }

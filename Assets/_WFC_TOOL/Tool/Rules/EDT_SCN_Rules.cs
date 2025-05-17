@@ -100,6 +100,20 @@ namespace PCG_Tool
 
             //Color compatibility matrix
             InspectorColorCompatibilityMatrix();
+
+            EditorGUILayout.Space(20);
+
+            GUI.backgroundColor = STY_Style.Variable_Color;
+            if (GUILayout.Button("Reset Rules", STY_Style.Button_Layout))
+            {
+                if (EditorUtility.DisplayDialog("Resetting rules...", 
+                    "Are you sure you want to reset all the rules?",
+                    "Yes, Reset",
+                    "Cancel"))
+                {
+                    UpdateTileSet(); //Not the same but useful
+                }
+            }
         }
 
         private void RefreshTilePreview()
@@ -157,15 +171,6 @@ namespace PCG_Tool
 
             rules.tileRules = new TileRule[rules.tileSet.GetTileCount()];
 
-            //Setup element 0 (air)
-            rules.tileRules[0].constraints = TileConstraints.None;
-            rules.tileRules[0].Up = TileColor.Air;
-            rules.tileRules[0].Down = TileColor.Air;
-            rules.tileRules[0].Left = TileColor.Air;
-            rules.tileRules[0].Right = TileColor.Air;
-            rules.tileRules[0].Forward = TileColor.Air;
-            rules.tileRules[0].Back = TileColor.Air;
-
             EditorUtility.SetDirty(rules);
         }
 
@@ -216,21 +221,21 @@ namespace PCG_Tool
 
             //Calculate tile distribution
             Vector3 tileSize = tileSet.tileSize;
-            int rowSize = Mathf.CeilToInt(Mathf.Sqrt(tileSet.GetTileCount() - 1));
+            int rowSize = Mathf.CeilToInt(Mathf.Sqrt(tileSet.GetTileCount()));
             tilePreviewCenter = new Vector3((rowSize - 1) * (tileSize.x + tilePreviewSeparation) / 2f, 0, (rowSize - 1) * (tileSize.z + tilePreviewSeparation) / 2f);
 
             //Create tilePositions
             constraintPositions = new Vector3[tileSet.GetTileCount()];
 
             //Intanciate tiles
-            for (int i = 1; i < tileSet.GetTileCount(); i++)
+            for (int i = 0; i < tileSet.GetTileCount(); i++)
             {
                 GameObject prefab = tileSet.GetPrefab((short)(i));
                 if (prefab == null) continue;
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
-                instance.transform.position = new Vector3(((i-1) % rowSize) * (tileSize.x + tilePreviewSeparation), 0, ((i-1) / rowSize) * (tileSize.z + tilePreviewSeparation));
+                instance.transform.position = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
                 instance.transform.SetParent(_previewParent.transform);
                 instance.layer = _previewLayer;
 
@@ -257,7 +262,7 @@ namespace PCG_Tool
         {
             if(constraintPositions == null || constraintPositions.Length == 0) return;
 
-            for (int i = 1; i < constraintPositions.Length; i++)
+            for (int i = 0; i < constraintPositions.Length; i++)
             {
                 TileRule rule = rules.tileRules[i];
 
