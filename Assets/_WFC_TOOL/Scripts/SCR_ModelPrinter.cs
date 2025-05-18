@@ -67,11 +67,7 @@ namespace PCG_Tool
                         if (tileInfo.id == -1) continue;  // ID -1 is empty space
 
                         GameObject prefab = tileSet.GetPrefab(tileInfo.id);
-                        if (prefab == null)
-                        {
-                            Debug.Log("ModelPrinter: Null item detected.");
-                            continue;
-                        }
+                        if (prefab == null) continue;
 
                         Vector3 position = new Vector3(x * tileSet.tileSize.x, y * tileSet.tileSize.y, z * tileSet.tileSize.z);
                         GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;

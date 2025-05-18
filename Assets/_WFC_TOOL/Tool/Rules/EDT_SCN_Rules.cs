@@ -171,6 +171,12 @@ namespace PCG_Tool
 
             rules.tileRules = new TileRule[rules.tileSet.GetTileCount()];
 
+            //Initialize weight to 1
+            for(int i = 0; i< rules.tileRules.Length; i++)
+            {
+                rules.tileRules[i].weight = 1f;
+            }
+
             EditorUtility.SetDirty(rules);
         }
 
@@ -231,24 +237,27 @@ namespace PCG_Tool
             for (int i = 0; i < tileSet.GetTileCount(); i++)
             {
                 GameObject prefab = tileSet.GetPrefab((short)(i));
-                if (prefab == null) continue;
+                Vector3 pos = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
 
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-                instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
-                instance.transform.position = new Vector3((i % rowSize) * (tileSize.x + tilePreviewSeparation), 0, (i / rowSize) * (tileSize.z + tilePreviewSeparation));
-                instance.transform.SetParent(_previewParent.transform);
-                instance.layer = _previewLayer;
+                if (prefab != null) //Instance object
+                {
+                    GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                    instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
+                    instance.transform.position = pos;
+                    instance.transform.SetParent(_previewParent.transform);
+                    instance.layer = _previewLayer;
 
-                SceneVisibilityManager.instance.DisablePicking(instance, true);
+                    SceneVisibilityManager.instance.DisablePicking(instance, true);
 
-                foreach (Transform child in instance.transform)
-                    child.gameObject.layer = _previewLayer;
+                    foreach (Transform child in instance.transform)
+                        child.gameObject.layer = _previewLayer;
+                }
 
                 //Generate ghost faces
-                GenerateFacesForTile((short)i, instance.transform.position, tileSet.tileSize);
+                GenerateFacesForTile((short)i, pos, tileSet.tileSize);
 
                 //Generation tile positions for constraints
-                constraintPositions[i] = instance.transform.position + Vector3.up * tileSet.tileSize.y;
+                constraintPositions[i] = pos + Vector3.up * tileSet.tileSize.y;
             }
         }
 
@@ -271,6 +280,7 @@ namespace PCG_Tool
                 //Convert world pos to screen pos
                 Vector2 guiPos = HandleUtility.WorldToGUIPoint(constraintPositions[i]);
                 
+                //Constraint Area
                 GUILayout.BeginArea(new Rect(guiPos.x - 30, guiPos.y - 75, 60, 75), GUI.skin.box);
                 bool newAllowMirroring = GUILayout.Toggle((rule.constraints & TileConstraints.AllowMirror) != 0, "Mirror");
                 bool newAllowRotX = GUILayout.Toggle((rule.constraints & TileConstraints.Allow_X_Rotation) != 0, "X rot");
@@ -282,6 +292,21 @@ namespace PCG_Tool
                     (newAllowRotY ? TileConstraints.Allow_Y_Rotation : 0) |
                     (newAllowRotZ ? TileConstraints.Allow_Z_Rotation : 0);
                 GUILayout.EndArea();
+
+                //Weight Area
+                GUILayout.BeginArea(new Rect(guiPos.x - 50, guiPos.y - 120, 100, 45), GUI.skin.box);
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Weight", GUILayout.Width(50));
+                rule.weight = EditorGUILayout.FloatField(rule.weight, GUILayout.Width(35));
+                EditorGUILayout.EndHorizontal();
+
+                rule.weight = GUILayout.HorizontalSlider(rule.weight, 0f, 1f, GUILayout.Width(90));
+
+                //Round to 2 decimals
+                rule.weight = Mathf.Round(rule.weight * 100f) / 100f;
+                GUILayout.EndArea();
+
 
                 Handles.EndGUI();
 

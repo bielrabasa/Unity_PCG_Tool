@@ -8,7 +8,6 @@ namespace PCG_Tool
     public class SBO_TileSet : ScriptableObject
     {
         public Vector3 tileSize = Vector3.one;
-        public bool allowAir = true;
         public List<GameObject> tiles;
 
         public GameObject GetPrefab(short id)
