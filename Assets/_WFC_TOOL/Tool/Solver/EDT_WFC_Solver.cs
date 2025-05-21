@@ -20,6 +20,14 @@ namespace PCG_Tool
             {
                 solver.Generate();
             }
+
+            if (solver.debugMode)
+            {
+                if (GUILayout.Button("Step", STY_Style.Button_Layout))
+                {
+                    solver.StepDebugSolver();
+                }
+            }
         }
     }
 

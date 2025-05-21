@@ -1,4 +1,3 @@
-using PCG_Tool;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -94,7 +93,7 @@ namespace PCG_Tool
                     for (int k = 0; k < gridSize.z; k++)
                     {
                         //Creating all the cells and duplicating the AllVariants list so that all the cells do NOT share the same INSTANCE for the list. 
-                        _gridCells[i, j, k] = new GridCell(new Vector3Int(i, j, k), new List<TileVariant>(AllVariants));
+                        _gridCells[i, j, k] = new GridCell(new Vector3Int(i, j, k), new List<TileVariant>(AllVariants), rules);
                     }
                 }
             }
@@ -109,32 +108,38 @@ namespace PCG_Tool
                 variants = variants.Concat(TileVariant.GenerateVariantsFromTileRule(rules.tileRules[i], (short)i)).ToList();
             }
 
-            Debug.Log("Variant count: " +  variants.Count + " Rule count: " + rules.tileRules.Length); 
+            //Debug.Log("Variant count: " +  variants.Count + " Rule count: " + rules.tileRules.Length); 
 
             return variants;
         }
 
         void CallSolver()
         {
-            _solver = new WFC_Algorithm(_gridCells, gridSize);
+            _solver = new WFC_Algorithm(_gridCells, gridSize, rules);
 
             if (debugMode) _solver.GenerateDebugMode();
             else _solver.GenerateStandard();
         }
 
-        void StepDebugSolver()
+        public void StepDebugSolver()
         {
             if (!debugMode) return;
 
             _solver.StepDebugMode();
+
+            FillRepresentationModel();
+            PrintModel();
         }
 
         //OUTPUT
         void FillRepresentationModel()
         {
-            outputModel = ScriptableObject.CreateInstance<SBO_RepresentationModel>();
+            if (outputModel == null)
+            {
+                outputModel = ScriptableObject.CreateInstance<SBO_RepresentationModel>();
+                outputModel.tileSet = _tileSet;
+            }
             outputModel.GridSize = gridSize;
-            outputModel.tileSet = _tileSet;
 
             for (int i = 0; i < gridSize.x; i++)
             {
@@ -143,7 +148,7 @@ namespace PCG_Tool
                     for (int k = 0; k < gridSize.z; k++)
                     {
                         GridCell cell = _gridCells[i, j, k];
-                        outputModel.SetTile(cell.coords.x, cell.coords.y, cell.coords.z, cell.chosenVariant.tileInfo);
+                        outputModel.SetTile(cell.coords.x, cell.coords.y, cell.coords.z, (cell.chosenVariant == null)? new TileInfo(-1, TileOrientation.None) : cell.chosenVariant.tileInfo);
                     }
                 }
             }

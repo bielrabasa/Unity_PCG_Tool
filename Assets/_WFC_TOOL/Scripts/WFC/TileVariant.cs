@@ -47,6 +47,7 @@ namespace PCG_Tool
                 //Rotated Variant
                 TileVariant variant = new TileVariant();
                 variant.tileInfo.id = tileId;
+                variant.weight = rule.weight;
 
                 ProcessTileRotation(rot, originalTileColors, ref variant);
                 variants.Add(variant);
@@ -56,6 +57,7 @@ namespace PCG_Tool
                 {
                     TileVariant mirroredVariant = new TileVariant();
                     mirroredVariant.tileInfo.id = tileId;
+                    variant.weight = rule.weight;
 
                     ProcessTileRotation(rot, originalMirroredColors, ref mirroredVariant);
                     mirroredVariant.tileInfo.orient |= TileOrientation.Mirrored;
