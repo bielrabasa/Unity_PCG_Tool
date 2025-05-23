@@ -593,7 +593,7 @@ namespace PCG_Tool
                     if(x == 0 && y == 0)
                     {
                         GUI.enabled = false;
-                        EditorGUILayout.Toggle(true, GUILayout.Width(15));
+                        EditorGUILayout.Toggle(rules.AreCompatible((TileColor)(1 << x), (TileColor)(1 << y)), GUILayout.Width(15));
                         GUI.enabled = true;
 
                         continue;
