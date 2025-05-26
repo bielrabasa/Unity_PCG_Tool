@@ -30,6 +30,13 @@ namespace PCG_Tool
             Back = tileVariant.Back;
         }
 
+        private static TileVariant airVariantInstance = null;
+        public static TileVariant AIR_VARIANT {  
+            get {
+                if (airVariantInstance == null) CreateAirVariant();
+                return airVariantInstance;
+            } }
+
         private static readonly Vector3[] originalDirections = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
 
         public static List<TileVariant> GenerateVariantsFromTileRule(TileRule rule, short tileId)
@@ -94,6 +101,17 @@ namespace PCG_Tool
                 else if (rounded == Vector3.back) variant.Back = originalTileColors[i];
                 else Debug.LogWarning("ERROR: Direction values not corresponding to orthogonal directions.");
             }
+        }
+
+        private static void CreateAirVariant()
+        {
+            airVariantInstance = new TileVariant();
+            airVariantInstance.Up = TileColor.Air;
+            airVariantInstance.Down = TileColor.Air;
+            airVariantInstance.Left = TileColor.Air;
+            airVariantInstance.Right = TileColor.Air;
+            airVariantInstance.Forward = TileColor.Air;
+            airVariantInstance.Back = TileColor.Air;
         }
     }
 

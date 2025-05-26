@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace PCG_Tool
@@ -32,18 +30,18 @@ namespace PCG_Tool
         public void GenerateStandard()
         {
             _debugMode = false;
-            finished = false;
 
             //TODO
+            PrepareGeneration();
             Loop();
         }
 
         public void GenerateDebugMode()
         {
             _debugMode = true;
-            finished = false;
             currentCollapsedTile = new Vector3Int(0, 0, -1);
 
+            PrepareGeneration();
             //TODO
         }
 
@@ -86,6 +84,17 @@ namespace PCG_Tool
         //                      WFC STEPS
         //-------------------------------------------------------
 
+        void PrepareGeneration()
+        {
+            finished = false;
+            _cellsByEntropy.Clear();
+
+
+            if(_rules.airBorders) ReduceInitialBorders();
+
+            //TODO if representation model...
+        }
+
         void Loop()
         {
             //TODO: Algorithm loop
@@ -104,11 +113,13 @@ namespace PCG_Tool
             finished = true;
         }
 
+        //Entropy
         void CollapseLeastEntropy()
         {
             //TODO
         }
 
+        //Compatibility
         void Propagate(Vector3Int tileToPropagateAround)
         {
             //Check the just-collapsed tile neighbours and reduce their compatibilities
@@ -126,6 +137,7 @@ namespace PCG_Tool
             for (int i = 0; i < NEIGHBOUR_DIRECTIONS.Length; i++)
             {
                 Vector3Int nbTile = tile + NEIGHBOUR_DIRECTIONS[i];
+
                 if (IsValidTileToCheck(nbTile))
                 {
                     TileVariant nbVariant = _gridCells[nbTile.x, nbTile.y, nbTile.z].chosenVariant;
@@ -133,7 +145,28 @@ namespace PCG_Tool
 
                     _gridCells[tile.x, tile.y, tile.z].CheckAllVariantsToFace(nbVariant, (FaceDirection)i);
                 }
+                //Off the grid (border)
+                else if (_rules.airBorders && !IsCoordInGrid(nbTile))
+                {
+                    _gridCells[tile.x, tile.y, tile.z].CheckAllVariantsToFace(TileVariant.AIR_VARIANT, (FaceDirection)i);
+                }
             }
+        }
+
+        void ReduceInitialBorders()
+        {
+            for (int x = 0; x < _gridSize.x; x++)
+                for (int y = 0; y < _gridSize.y; y++)
+                    for (int z = 0; z < _gridSize.z; z++)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        if (IsOnBorder(pos)) ReduceNonCompatible(pos);
+                    }
+        }
+
+        void ReduceAroundRM()
+        {
+            //TODO
         }
 
         //-------------------------------------------------------
@@ -151,6 +184,13 @@ namespace PCG_Tool
             return (coord.x >= 0 && coord.x < _gridSize.x) && 
                 (coord.y >= 0 && coord.y < _gridSize.y) && 
                 (coord.z >= 0 && coord.z < _gridSize.z);
+        }
+
+        private bool IsOnBorder(Vector3Int coord)
+        {
+            return coord.x == 0 || coord.x == _gridSize.x - 1 ||
+                    coord.y == 0 || coord.y == _gridSize.y - 1 ||
+                    coord.z == 0 || coord.z == _gridSize.z - 1;
         }
     }
 

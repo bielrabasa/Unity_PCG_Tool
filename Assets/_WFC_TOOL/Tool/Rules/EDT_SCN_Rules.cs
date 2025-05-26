@@ -98,6 +98,12 @@ namespace PCG_Tool
                 }
             }
 
+            //Air borders mode
+            GUI.backgroundColor = STY_Style.Variable_Color;
+            EditorGUILayout.Space(10);
+            EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
+            rules.airBorders = EditorGUILayout.ToggleLeft("Air grid borders (not ignoring borders)", rules.airBorders);
+
             //Color compatibility matrix
             InspectorColorCompatibilityMatrix();
 

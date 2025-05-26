@@ -13,6 +13,8 @@ namespace PCG_Tool
         public const int MATRIX_COLOR_COUNT = 16;
         public TileColor[] colorTable; //Color compatibility matrix
 
+        public bool airBorders = false;
+
         public SBO_Rules()
         {
             //Initialise colorTable diagonal
