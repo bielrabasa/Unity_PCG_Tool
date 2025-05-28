@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace PCG_Tool
@@ -8,14 +9,18 @@ namespace PCG_Tool
     {
         public bool finished {  get; private set; }
 
+        //Cells
         private GridCell[,,] _gridCells;
-        private List<GridCell> _cellsByEntropy; //TODO: implement
+        private List<GridCell> _cellsByEntropy = new List<GridCell>();
+
+        //Settings
         private Vector3Int _gridSize;
         private SBO_Rules _rules;
+        public SBO_RepresentationModel _initialRepresentationModel;
         
         //Debug
         private bool _debugMode;
-        private Vector3Int currentCollapsedTile; //TODO: erase, not doing by entropy
+        //private Vector3Int currentCollapsedTile; //TODO: erase, not doing by entropy
 
         private static readonly Vector3Int[] NEIGHBOUR_DIRECTIONS = new Vector3Int[] { 
             Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right, Vector3Int.forward, Vector3Int.back };
@@ -31,7 +36,6 @@ namespace PCG_Tool
         {
             _debugMode = false;
 
-            //TODO
             PrepareGeneration();
             Loop();
         }
@@ -39,10 +43,8 @@ namespace PCG_Tool
         public void GenerateDebugMode()
         {
             _debugMode = true;
-            currentCollapsedTile = new Vector3Int(0, 0, -1);
 
             PrepareGeneration();
-            //TODO
         }
 
         public void StepDebugMode()
@@ -55,29 +57,9 @@ namespace PCG_Tool
                 return;
             }
 
-            //TODO
-            Vector3Int tileToStep = currentCollapsedTile + Vector3Int.forward;
-            if(tileToStep.z >= _gridSize.z)
-            {
-                tileToStep.z = 0;
-                tileToStep.y++;
+            StepAlgorithm();
 
-                if (tileToStep.y >= _gridSize.y)
-                {
-                    tileToStep.y = 0;
-                    tileToStep.x++;
-
-                    if (tileToStep.x >= _gridSize.x)
-                    {
-                        finished = true;
-                        return;
-                    }
-                }
-            }
-
-            _gridCells[tileToStep.x, tileToStep.y, tileToStep.z].CollapseCell();
-            Propagate(tileToStep);
-            currentCollapsedTile = tileToStep;
+            if(_cellsByEntropy.Count == 0) finished = true;
         }
 
         //-------------------------------------------------------
@@ -89,34 +71,47 @@ namespace PCG_Tool
             finished = false;
             _cellsByEntropy.Clear();
 
-
+            if (_initialRepresentationModel != null) ReduceAroundRM();
             if(_rules.airBorders) ReduceInitialBorders();
 
-            //TODO if representation model...
+            //Setup entropy list
+            for (int i = 0; i < _gridSize.x; i++)
+                for (int j = 0; j < _gridSize.y; j++)
+                    for (int k = 0; k < _gridSize.z; k++)
+                    {
+                        GridCell cell = _gridCells[i, j, k];
+                        _cellsByEntropy.Add(cell);
+                    }
+
+            SortCells();
         }
 
         void Loop()
         {
-            //TODO: Algorithm loop
-            for (int i = 0; i < _gridSize.x; i++)
+            while (_cellsByEntropy.Count > 0)
             {
-                for (int j = 0; j < _gridSize.y; j++)
-                {
-                    for (int k = 0; k < _gridSize.z; k++)
-                    {
-                        _gridCells[i, j, k].CollapseCell();
-                        Propagate(new Vector3Int(i, j, k));
-                    }
-                }
+                StepAlgorithm();
             }
 
             finished = true;
         }
 
-        //Entropy
-        void CollapseLeastEntropy()
+        void StepAlgorithm()
         {
-            //TODO
+            GridCell cell = GetTileToCollapse();
+
+            cell.CollapseCell();
+            _cellsByEntropy.Remove(cell);
+
+            Propagate(cell.coords);
+            SortCells();
+        }
+
+        //Entropy
+        GridCell GetTileToCollapse()
+        {
+            //TODO: Random between least entropy
+            return _cellsByEntropy[0];
         }
 
         //Compatibility
@@ -167,6 +162,14 @@ namespace PCG_Tool
         void ReduceAroundRM()
         {
             //TODO
+            /*for (int i = 0; i < _gridSize.x; i++)
+                for (int j = 0; j < _gridSize.y; j++)
+                    for (int k = 0; k < _gridSize.z; k++)
+                    {
+                        TileInfo tile = _initialRepresentationModel.GetTile(i, j, k);
+
+
+                    }*/
         }
 
         //-------------------------------------------------------
@@ -191,6 +194,12 @@ namespace PCG_Tool
             return coord.x == 0 || coord.x == _gridSize.x - 1 ||
                     coord.y == 0 || coord.y == _gridSize.y - 1 ||
                     coord.z == 0 || coord.z == _gridSize.z - 1;
+        }
+
+        //Sorting
+        void SortCells()
+        {
+            _cellsByEntropy.Sort((a, b) => a.entropy.CompareTo(b.entropy));
         }
     }
 

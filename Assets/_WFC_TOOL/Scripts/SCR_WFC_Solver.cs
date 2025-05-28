@@ -80,7 +80,7 @@ namespace PCG_Tool
 
         void SetupGridCells()
         {
-            //TODO: Call on generate, optimise to only call when anything changes?
+            //TODO: Setup variants Call on generate, optimise to only call when anything changes?
             //TODO: if initialRepresentationModel != null modify generated tiles
             _gridCells = new GridCell[gridSize.x, gridSize.y, gridSize.z];
 
@@ -116,6 +116,7 @@ namespace PCG_Tool
         void CallSolver()
         {
             _solver = new WFC_Algorithm(_gridCells, gridSize, rules);
+            if(initialRepresentationModel != null) _solver._initialRepresentationModel = initialRepresentationModel;
 
             if (debugMode) _solver.GenerateDebugMode();
             else _solver.GenerateStandard();
