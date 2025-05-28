@@ -69,12 +69,10 @@ namespace PCG_Tool
         void PrepareGeneration()
         {
             finished = false;
-            _cellsByEntropy.Clear();
-
-            if (_initialRepresentationModel != null) ReduceAroundRM();
-            if(_rules.airBorders) ReduceInitialBorders();
 
             //Setup entropy list
+            _cellsByEntropy.Clear();
+
             for (int i = 0; i < _gridSize.x; i++)
                 for (int j = 0; j < _gridSize.y; j++)
                     for (int k = 0; k < _gridSize.z; k++)
@@ -82,6 +80,10 @@ namespace PCG_Tool
                         GridCell cell = _gridCells[i, j, k];
                         _cellsByEntropy.Add(cell);
                     }
+
+            //Reduce initial options
+            if (_initialRepresentationModel != null) ReduceAroundRM();
+            else if(_rules.airBorders) ReduceInitialBorders();
 
             SortCells();
         }
@@ -161,15 +163,23 @@ namespace PCG_Tool
 
         void ReduceAroundRM()
         {
-            //TODO
-            /*for (int i = 0; i < _gridSize.x; i++)
+            for (int i = 0; i < _gridSize.x; i++)
                 for (int j = 0; j < _gridSize.y; j++)
                     for (int k = 0; k < _gridSize.z; k++)
                     {
                         TileInfo tile = _initialRepresentationModel.GetTile(i, j, k);
+                        if (tile.id == -1) continue;
 
+                        //Setup collapsed cell
+                        GridCell cell = _gridCells[i, j, k];
+                        _cellsByEntropy.Remove(cell);
+                        cell.CollapseManually(TileVariant.GetTileVariantFromTileInfo(tile, _rules.tileRules[tile.id]));
+                    }
 
-                    }*/
+            foreach(GridCell cell in _cellsByEntropy)
+            {
+                ReduceNonCompatible(cell.coords);
+            }
         }
 
         //-------------------------------------------------------

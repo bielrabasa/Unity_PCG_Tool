@@ -41,7 +41,7 @@ namespace PCG_Tool
             // Optional: Inicializar con valores por defecto
             for (int i = 0; i < tiles.Length; i++)
             {
-                tiles[i] = new TileInfo(0); // ID 0 = vacío
+                tiles[i] = new TileInfo(-1); // ID -1 = vacío
             }
 
             EditorUtility.SetDirty(this); // Marcar como modificado en el editor
@@ -69,6 +69,10 @@ namespace PCG_Tool
         public void ResizeGrid(Vector3Int newSize)
         {
             TileInfo[] newTiles = new TileInfo[newSize.x * newSize.y * newSize.z];
+            for (int i = 0; i < newTiles.Length; i++)
+            {
+                newTiles[i] = new TileInfo(-1);
+            }
 
             for (int x = 0; x < Mathf.Min(gridSize.x, newSize.x); x++)
             {

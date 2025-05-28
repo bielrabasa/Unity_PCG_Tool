@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 
@@ -112,6 +113,25 @@ namespace PCG_Tool
             airVariantInstance.Right = TileColor.Air;
             airVariantInstance.Forward = TileColor.Air;
             airVariantInstance.Back = TileColor.Air;
+        }
+
+        public static TileVariant GetTileVariantFromTileInfo(TileInfo tileInfo, TileRule rule)
+        {
+            TileVariant variant = new TileVariant();
+            variant.tileInfo = tileInfo;
+
+            //Original TileColors
+            TileColor[] colors = { rule.Up, rule.Down, rule.Left, rule.Right, rule.Forward, rule.Back };
+
+            //Mirrored
+            if((tileInfo.orient & TileOrientation.Mirrored) != 0)
+            {
+                colors = new TileColor[]{ rule.Up, rule.Down, rule.Right, rule.Left, rule.Forward, rule.Back };
+            }
+
+            ProcessTileRotation(tileInfo.GetRotation(), colors, ref variant);
+
+            return variant;
         }
     }
 

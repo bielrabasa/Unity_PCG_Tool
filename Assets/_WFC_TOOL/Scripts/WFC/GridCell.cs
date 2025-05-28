@@ -72,6 +72,13 @@ namespace PCG_Tool
             collapsed = true;
         }
 
+        public void CollapseManually(TileVariant tileVariant)
+        {
+            chosenVariant = tileVariant;
+            possibleVariants.Clear();
+            collapsed = true;
+        }
+
         public void CheckAllVariantsToFace(TileVariant nbVariant, FaceDirection nbDir)
         {
             switch (nbDir)
