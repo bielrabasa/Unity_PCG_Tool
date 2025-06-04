@@ -12,6 +12,7 @@ namespace PCG_Tool
         private List<TileVariant> possibleVariants;
         public int entropy { get { return possibleVariants.Count; } }
         public bool collapsed { get; private set; }
+        public GridCell collapsedFrom = null;
         public TileVariant chosenVariant;
 
         public GridCell(Vector3Int coords, List<TileVariant> possibleVariants, SBO_Rules rules)
@@ -72,11 +73,31 @@ namespace PCG_Tool
             collapsed = true;
         }
 
+        public bool ReCollapseCell()
+        {
+            possibleVariants.Remove(chosenVariant);
+
+            if (possibleVariants.Count == 0)
+            {
+                chosenVariant = null;
+                collapsed = false;
+                return false;
+            }
+
+            CollapseCell();
+            return true;
+        }
+
         public void CollapseManually(TileVariant tileVariant)
         {
             chosenVariant = tileVariant;
             possibleVariants.Clear();
             collapsed = true;
+        }
+
+        public void RefillVariants(List<TileVariant> variants)
+        {
+            possibleVariants = new List<TileVariant>(variants);
         }
 
         public void CheckAllVariantsToFace(TileVariant nbVariant, FaceDirection nbDir)

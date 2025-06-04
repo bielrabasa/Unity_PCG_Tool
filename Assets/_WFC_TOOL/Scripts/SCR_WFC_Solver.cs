@@ -21,6 +21,7 @@ namespace PCG_Tool
         //Variables
         private GridCell[,,] _gridCells;
         private WFC_Algorithm _solver;
+        private List<TileVariant> _variants;
 
         //Output
         public SBO_RepresentationModel outputModel;
@@ -81,10 +82,10 @@ namespace PCG_Tool
         void SetupGridCells()
         {
             //TODO: Setup variants Call on generate, optimise to only call when anything changes?
-            //TODO: if initialRepresentationModel != null modify generated tiles
+            //TODO: if initialRepresentationModel != null modify generated tiles (DO IT HERE OR IN ALGORITHM)
             _gridCells = new GridCell[gridSize.x, gridSize.y, gridSize.z];
 
-            var AllVariants = CalculateAllVariants();
+            _variants = CalculateAllVariants();
 
             for (int i = 0; i < gridSize.x; i++)
             {
@@ -93,7 +94,7 @@ namespace PCG_Tool
                     for (int k = 0; k < gridSize.z; k++)
                     {
                         //Creating all the cells and duplicating the AllVariants list so that all the cells do NOT share the same INSTANCE for the list. 
-                        _gridCells[i, j, k] = new GridCell(new Vector3Int(i, j, k), new List<TileVariant>(AllVariants), rules);
+                        _gridCells[i, j, k] = new GridCell(new Vector3Int(i, j, k), new List<TileVariant>(_variants), rules);
                     }
                 }
             }
@@ -115,7 +116,7 @@ namespace PCG_Tool
 
         void CallSolver()
         {
-            _solver = new WFC_Algorithm(_gridCells, gridSize, rules);
+            _solver = new WFC_Algorithm(_gridCells, gridSize, rules, _variants);
             if(initialRepresentationModel != null) _solver._initialRepresentationModel = initialRepresentationModel;
 
             if (debugMode) _solver.GenerateDebugMode();

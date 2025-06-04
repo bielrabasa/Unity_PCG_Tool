@@ -17,19 +17,23 @@ namespace PCG_Tool
         private Vector3Int _gridSize;
         private SBO_Rules _rules;
         public SBO_RepresentationModel _initialRepresentationModel;
-        
+
+        //Backtracking
+        private bool _allowBacktracking = true;
+        private List<TileVariant> _allVariants;
+
         //Debug
         private bool _debugMode;
-        //private Vector3Int currentCollapsedTile; //TODO: erase, not doing by entropy
 
         private static readonly Vector3Int[] NEIGHBOUR_DIRECTIONS = new Vector3Int[] { 
             Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right, Vector3Int.forward, Vector3Int.back };
 
-        public WFC_Algorithm(GridCell[,,] gridCells, Vector3Int gridSize, SBO_Rules rules)
+        public WFC_Algorithm(GridCell[,,] gridCells, Vector3Int gridSize, SBO_Rules rules, List<TileVariant> allVariants)
         {
             this._gridCells = gridCells;
             this._gridSize = gridSize;
             this._rules = rules;
+            this._allVariants = allVariants;
         }
 
         public void GenerateStandard()
@@ -90,7 +94,7 @@ namespace PCG_Tool
 
         void Loop()
         {
-            while (_cellsByEntropy.Count > 0)
+            while (!finished && _cellsByEntropy.Count > 0)
             {
                 StepAlgorithm();
             }
@@ -100,12 +104,16 @@ namespace PCG_Tool
 
         void StepAlgorithm()
         {
+            if (finished) return;
+
             GridCell cell = GetTileToCollapse();
 
             cell.CollapseCell();
             _cellsByEntropy.Remove(cell);
 
-            Propagate(cell.coords);
+            if (!_allowBacktracking) Propagate(cell.coords);
+            else if (!Propagate(cell.coords)) Backtrack(cell);
+
             SortCells();
         }
 
@@ -116,19 +124,49 @@ namespace PCG_Tool
             return _cellsByEntropy[0];
         }
 
-        //Compatibility
-        void Propagate(Vector3Int tileToPropagateAround)
+        /// <returns> Returns false if blocks the possibility of collapsing another tile (entropy 0) </returns>
+        bool Propagate(Vector3Int tileToPropagateAround)
         {
             //Check the just-collapsed tile neighbours and reduce their compatibilities
             //TODO: this can be done in different threads in the future
-            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS) ReduceNonCompatible(tileToPropagateAround + dir);
+            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
+            {
+                if(!ReduceNonCompatible(tileToPropagateAround + dir)) return false;
+            }
+
+            //Set collapsedFrom to the propagating tile
+            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
+            {
+                Vector3Int coords = tileToPropagateAround + dir;
+                if (!IsCoordInGrid(coords)) continue;
+
+                GridCell cell = _gridCells[coords.x, coords.y, coords.z];
+                if (!cell.collapsed && cell.collapsedFrom == null) cell.collapsedFrom = _gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z];
+            }
+            return true;
         }
 
-        void ReduceNonCompatible(Vector3Int tile)
+        void PropagateRefill(Vector3Int tileToPropagateAround)
+        {
+            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
+            {
+                Vector3Int pos = tileToPropagateAround + dir;
+
+                if(!IsCoordInGrid(pos)) continue;
+
+                GridCell cell = _gridCells[pos.x, pos.y, pos.z];
+                if (cell.collapsed) continue;
+
+                cell.RefillVariants(_allVariants);
+            }
+        }
+
+        /// <returns> Returns false if the tile ends with entropy 0 </returns>
+        bool ReduceNonCompatible(Vector3Int tile)
         {
             //Check if this tile is valid
-            if (!IsCoordInGrid(tile)) return;
-            if (_gridCells[tile.x, tile.y, tile.z].collapsed) return;
+            if (!IsCoordInGrid(tile)) return true;
+            if (_gridCells[tile.x, tile.y, tile.z].collapsed) return true;
 
             //Check all neighbouring tiles to this one
             for (int i = 0; i < NEIGHBOUR_DIRECTIONS.Length; i++)
@@ -148,6 +186,9 @@ namespace PCG_Tool
                     _gridCells[tile.x, tile.y, tile.z].CheckAllVariantsToFace(TileVariant.AIR_VARIANT, (FaceDirection)i);
                 }
             }
+
+            if (_gridCells[tile.x, tile.y, tile.z].entropy == 0) return false;
+            return true;
         }
 
         void ReduceInitialBorders()
@@ -179,6 +220,52 @@ namespace PCG_Tool
             foreach(GridCell cell in _cellsByEntropy)
             {
                 ReduceNonCompatible(cell.coords);
+            }
+        }
+
+        void Backtrack(GridCell cellToBacktrack)
+        {
+            while (cellToBacktrack != null)
+            {
+                if(cellToBacktrack.entropy == 0)
+                {
+                    Debug.LogError("ERROR: Caught in a backtracking loop.");
+                    finished = true;
+                    return;
+                }
+
+                //Forbid chosen variant
+                bool succesfulCollapse = cellToBacktrack.ReCollapseCell();
+
+                //Re-fill adjacent tiles
+                PropagateRefill(cellToBacktrack.coords);
+
+                //Re-try with the next variant
+                if (succesfulCollapse)
+                {
+                    //Try to propagate
+                    if (Propagate(cellToBacktrack.coords)) cellToBacktrack = null;
+                }
+                
+                //If current cell has no more options
+                else
+                {
+                    //Reduce neighbour options (because they got refilled)
+                    Propagate(cellToBacktrack.coords);
+
+                    //Not refilling (will be refilled while backtracking the tile comming from
+                    _cellsByEntropy.Add(cellToBacktrack);
+
+                    //Check for errors
+                    if (cellToBacktrack.collapsedFrom == null)
+                    {
+                        Debug.LogError("Initial incoherence, this model can't be solved.");
+                        finished = true;
+                        return;
+                    }
+
+                    cellToBacktrack = cellToBacktrack.collapsedFrom;
+                }
             }
         }
 
