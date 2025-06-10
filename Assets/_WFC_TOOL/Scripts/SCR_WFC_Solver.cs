@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -70,6 +71,7 @@ namespace PCG_Tool
 
         public void Generate()
         {
+            StopAllCoroutines();
             if (!CheckInformation()) return;
 
             SetupGridCells(); //TODO: Optimisation, only call if anything changed, not always
@@ -131,6 +133,21 @@ namespace PCG_Tool
 
             FillRepresentationModel();
             PrintModel();
+        }
+
+        public void TimedDebugSolver()
+        {
+            if(!debugMode) return;
+            StartCoroutine(TimerDebugSolver());
+        }
+
+        IEnumerator TimerDebugSolver()
+        {
+            while (!_solver.finished)
+            {
+                StepDebugSolver();
+                yield return null;
+            }
         }
 
         //OUTPUT

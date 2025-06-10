@@ -12,7 +12,7 @@ namespace PCG_Tool
         private List<TileVariant> possibleVariants;
         public int entropy { get { return possibleVariants.Count; } }
         public bool collapsed { get; private set; }
-        public GridCell collapsedFrom = null;
+        public List<GridCell> collapsedFromSorted = new List<GridCell>();
         public TileVariant chosenVariant;
 
         public GridCell(Vector3Int coords, List<TileVariant> possibleVariants, SBO_Rules rules)
@@ -26,7 +26,6 @@ namespace PCG_Tool
 
         public void CollapseCell()
         {
-            //TODO: backtracking will probably change this (first will erase chosen variant from the possible variants)
             //TODO: use custom-made randomiser?
 
             //Security
@@ -64,7 +63,11 @@ namespace PCG_Tool
             }
 
             //In case of error, chose the first group
-            if (chosenGroup == null) chosenGroup = groups[0].Variants;
+            if (chosenGroup == null)
+            {
+                Debug.LogWarning("GRIDCELL: Incorrect tile variant choice.");
+                chosenGroup = groups[0].Variants;
+            }
 
             //Choose random variant in group
             int idx = Random.Range(0, chosenGroup.Count);
@@ -93,6 +96,13 @@ namespace PCG_Tool
             chosenVariant = tileVariant;
             possibleVariants.Clear();
             collapsed = true;
+        }
+
+        public GridCell GetLastCollapsedFrom()
+        {
+            if (collapsedFromSorted.Count() == 0) return null;
+
+            return collapsedFromSorted[collapsedFromSorted.Count() - 1];
         }
 
         public void RefillVariants(List<TileVariant> variants)

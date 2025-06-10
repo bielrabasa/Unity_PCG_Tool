@@ -15,7 +15,7 @@ MonoBehaviour:
   tileSet: {fileID: 11400000, guid: 5acc4d12061d1c043bf6ab6c6cfaee64, type: 2}
   tileRules:
   - constraints: 4
-    weight: 0.11
+    weight: 1
     Up: 1
     Down: 1
     Left: 2048
@@ -31,7 +31,7 @@ MonoBehaviour:
     Forward: 4
     Back: 4
   - constraints: 4
-    weight: 0.45
+    weight: 1
     Up: 1
     Down: 1
     Left: 4
@@ -46,5 +46,5 @@ MonoBehaviour:
     Right: 1
     Forward: 1
     Back: 1
-  colorTable: 0108020004000800100020004000800000010002000401080010002000400080
+  colorTable: 0108020004000800100020004000800000010002000401000010002000400080
   airBorders: 1

@@ -28,6 +28,14 @@ namespace PCG_Tool
                     solver.StepDebugSolver();
                 }
             }
+
+            if (solver.debugMode)
+            {
+                if (GUILayout.Button("Debug Timed Solve", STY_Style.Button_Layout))
+                {
+                    solver.TimedDebugSolver();
+                }
+            }
         }
     }
 

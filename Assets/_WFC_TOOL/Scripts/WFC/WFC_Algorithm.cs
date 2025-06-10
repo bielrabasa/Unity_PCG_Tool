@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Android;
 
 namespace PCG_Tool
 {
@@ -21,6 +22,7 @@ namespace PCG_Tool
         //Backtracking
         private bool _allowBacktracking = true;
         private List<TileVariant> _allVariants;
+        private Vector3Int lastCollapsedPos = Vector3Int.back;
 
         //Debug
         private bool _debugMode;
@@ -112,7 +114,15 @@ namespace PCG_Tool
             _cellsByEntropy.Remove(cell);
 
             if (!_allowBacktracking) Propagate(cell.coords);
-            else if (!Propagate(cell.coords)) Backtrack(cell);
+            else if (!Propagate(cell.coords))
+            {
+                Backtrack(cell);
+            }
+            else
+            {
+                //Correct Propagation
+                PropagateNotifyCollapsedFrom(cell.coords, add: true);
+            }
 
             SortCells();
         }
@@ -120,6 +130,35 @@ namespace PCG_Tool
         //Entropy
         GridCell GetTileToCollapse()
         {
+            //TODO: TESTING
+            /*Vector3Int lastCollapsedCell = lastCollapsedPos;
+
+            lastCollapsedPos.z += 1;
+
+            if(lastCollapsedPos.z >= _gridSize.z)
+            {
+                lastCollapsedPos.z = 0;
+                lastCollapsedPos.x++;
+            }
+
+            if (lastCollapsedPos.x >= _gridSize.x)
+            {
+                lastCollapsedPos.x = 0;
+                lastCollapsedPos.y++;
+            }
+
+            if(lastCollapsedPos.y >= _gridSize.y)
+            {
+                finished = true;
+                return null;
+            }
+
+            GridCell cell = _gridCells[lastCollapsedPos.x, lastCollapsedPos.y, lastCollapsedPos.z];
+
+            if(IsCoordInGrid(lastCollapsedCell)) cell.collapsedFrom = _gridCells[lastCollapsedCell.x, lastCollapsedCell.y, lastCollapsedCell.z];
+            return cell;*/
+
+
             //TODO: Random between least entropy
             return _cellsByEntropy[0];
         }
@@ -134,16 +173,28 @@ namespace PCG_Tool
                 if(!ReduceNonCompatible(tileToPropagateAround + dir)) return false;
             }
 
-            //Set collapsedFrom to the propagating tile
+            return true;
+        }
+
+        //Add -> True | Remove -> False
+        void PropagateNotifyCollapsedFrom(Vector3Int tileToPropagateAround, bool add)
+        {
             foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
             {
                 Vector3Int coords = tileToPropagateAround + dir;
                 if (!IsCoordInGrid(coords)) continue;
 
                 GridCell cell = _gridCells[coords.x, coords.y, coords.z];
-                if (!cell.collapsed && cell.collapsedFrom == null) cell.collapsedFrom = _gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z];
+
+                if (add)
+                {
+                    cell.collapsedFromSorted.Add(_gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z]);
+                }
+                else
+                {
+                    cell.collapsedFromSorted.Remove(_gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z]);
+                }
             }
-            return true;
         }
 
         void PropagateRefill(Vector3Int tileToPropagateAround)
@@ -162,11 +213,11 @@ namespace PCG_Tool
         }
 
         /// <returns> Returns false if the tile ends with entropy 0 </returns>
-        bool ReduceNonCompatible(Vector3Int tile)
+        bool ReduceNonCompatible(Vector3Int tile, bool reduceIfCollapsed = false)
         {
             //Check if this tile is valid
             if (!IsCoordInGrid(tile)) return true;
-            if (_gridCells[tile.x, tile.y, tile.z].collapsed) return true;
+            if (!reduceIfCollapsed && _gridCells[tile.x, tile.y, tile.z].collapsed) return true;
 
             //Check all neighbouring tiles to this one
             for (int i = 0; i < NEIGHBOUR_DIRECTIONS.Length; i++)
@@ -235,6 +286,7 @@ namespace PCG_Tool
                 }
 
                 //Forbid chosen variant
+                ReduceNonCompatible(cellToBacktrack.coords, reduceIfCollapsed: true);
                 bool succesfulCollapse = cellToBacktrack.ReCollapseCell();
 
                 //Re-fill adjacent tiles
@@ -243,28 +295,45 @@ namespace PCG_Tool
                 //Re-try with the next variant
                 if (succesfulCollapse)
                 {
+                    //TODO PropagateNotifyCollapsedFrom(cellToBacktrack.coords, add: false);
+
                     //Try to propagate
-                    if (Propagate(cellToBacktrack.coords)) cellToBacktrack = null;
+                    if (Propagate(cellToBacktrack.coords))
+                    {
+                        //TODO: TESTING -> when succesful collapse & propagation -> reset position
+                        PropagateNotifyCollapsedFrom(cellToBacktrack.coords, add: true);
+                        cellToBacktrack = null;
+                    }
                 }
                 
                 //If current cell has no more options
                 else
                 {
                     //Reduce neighbour options (because they got refilled)
-                    Propagate(cellToBacktrack.coords);
+                    if (!Propagate(cellToBacktrack.coords))
+                    {
+                        Debug.LogError("ERROR: Neighbouring tiles should not have entropy 0 in this case.");
+                    }
 
-                    //Not refilling (will be refilled while backtracking the tile comming from
+                    //Resetting tile state to previous
+                    cellToBacktrack.RefillVariants(_allVariants);
+                    ReduceNonCompatible(cellToBacktrack.coords);
                     _cellsByEntropy.Add(cellToBacktrack);
 
+                    GridCell newCellToBacktrack = cellToBacktrack.GetLastCollapsedFrom();
+
                     //Check for errors
-                    if (cellToBacktrack.collapsedFrom == null)
+                    if (newCellToBacktrack == null)
                     {
                         Debug.LogError("Initial incoherence, this model can't be solved.");
                         finished = true;
                         return;
                     }
 
-                    cellToBacktrack = cellToBacktrack.collapsedFrom;
+                    //Remove where the cell came from (no longer true)
+                    cellToBacktrack.collapsedFromSorted.Remove(newCellToBacktrack);
+
+                    cellToBacktrack = newCellToBacktrack;
                 }
             }
         }
