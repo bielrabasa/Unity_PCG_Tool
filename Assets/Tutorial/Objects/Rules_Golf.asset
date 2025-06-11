@@ -15,7 +15,7 @@ MonoBehaviour:
   tileSet: {fileID: 11400000, guid: 5acc4d12061d1c043bf6ab6c6cfaee64, type: 2}
   tileRules:
   - constraints: 4
-    weight: 1
+    weight: 0.16
     Up: 1
     Down: 1
     Left: 2048

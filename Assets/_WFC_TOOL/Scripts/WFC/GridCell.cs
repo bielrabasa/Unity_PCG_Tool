@@ -12,7 +12,6 @@ namespace PCG_Tool
         private List<TileVariant> possibleVariants;
         public int entropy { get { return possibleVariants.Count; } }
         public bool collapsed { get; private set; }
-        public List<GridCell> collapsedFromSorted = new List<GridCell>();
         public TileVariant chosenVariant;
 
         public GridCell(Vector3Int coords, List<TileVariant> possibleVariants, SBO_Rules rules)
@@ -96,13 +95,6 @@ namespace PCG_Tool
             chosenVariant = tileVariant;
             possibleVariants.Clear();
             collapsed = true;
-        }
-
-        public GridCell GetLastCollapsedFrom()
-        {
-            if (collapsedFromSorted.Count() == 0) return null;
-
-            return collapsedFromSorted[collapsedFromSorted.Count() - 1];
         }
 
         public void RefillVariants(List<TileVariant> variants)

@@ -22,8 +22,6 @@ namespace PCG_Tool
         //Backtracking
         private bool _allowBacktracking = true;
         private List<TileVariant> _allVariants;
-        private List<GridCell> _backtrackingOrder;
-        private Vector3Int lastCollapsedPos = Vector3Int.back;
 
         //Debug
         private bool _debugMode;
@@ -113,23 +111,18 @@ namespace PCG_Tool
 
             cell.CollapseCell();
             _cellsByEntropy.Remove(cell);
-
-            if (!_allowBacktracking) Propagate(cell.coords);
-            else if (!Propagate(cell.coords))
-            {
-                PropagateNotifyCollapsedFrom(cell.coords, add: true);
-                SortCells();
-
-                //Backtrack on the cell that has no possibilities
-                Backtrack(_cellsByEntropy[0]);
-            }
-            else
-            {
-                //Correct Propagation
-                PropagateNotifyCollapsedFrom(cell.coords, add: true);
-            }
+            Propagate(cell.coords);
 
             SortCells();
+
+            if (!_allowBacktracking) return;
+
+            //Backtracking
+            while(_cellsByEntropy.Count > 0 && _cellsByEntropy[0].entropy == 0)
+            {
+                Backtrack(_cellsByEntropy[0]);
+                SortCells();
+            }
         }
 
         //Entropy
@@ -181,27 +174,6 @@ namespace PCG_Tool
             }
 
             return success;
-        }
-
-        //Add -> True | Remove -> False
-        void PropagateNotifyCollapsedFrom(Vector3Int tileToPropagateAround, bool add)
-        {
-            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
-            {
-                Vector3Int coords = tileToPropagateAround + dir;
-                if (!IsCoordInGrid(coords)) continue;
-
-                GridCell cell = _gridCells[coords.x, coords.y, coords.z];
-
-                if (add)
-                {
-                    cell.collapsedFromSorted.Add(_gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z]);
-                }
-                else
-                {
-                    cell.collapsedFromSorted.Remove(_gridCells[tileToPropagateAround.x, tileToPropagateAround.y, tileToPropagateAround.z]);
-                }
-            }
         }
 
         void PropagateRefill(Vector3Int tileToPropagateAround)
@@ -283,9 +255,18 @@ namespace PCG_Tool
 
         void Backtrack(GridCell cellBacktrackingAround)
         {
-            _backtrackingOrder = cellBacktrackingAround.collapsedFromSorted;
-            int currentBacktrackingOrder = _backtrackingOrder.Count - 1;
-            GridCell cellToBacktrack = _backtrackingOrder[currentBacktrackingOrder];
+            //Get neighbour cells
+            List<GridCell> nbCells = GetNeighbouringCollapsedCells(cellBacktrackingAround);
+            int currentNbCell = nbCells.Count - 1;
+
+            if(currentNbCell < 0)
+            {
+                Debug.LogError("ERROR: Backtracking a lonely cell. Cell: " + cellBacktrackingAround.coords);
+                finished = true;
+                return;
+            }
+
+            GridCell cellToBacktrack = nbCells[currentNbCell];
 
             while (cellToBacktrack != null)
             {
@@ -306,13 +287,9 @@ namespace PCG_Tool
                 //Re-try with the next variant
                 if (succesfulCollapse)
                 {
-                    //TODO PropagateNotifyCollapsedFrom(cellToBacktrack.coords, add: false);
-
                     //Try to propagate
                     if (Propagate(cellToBacktrack.coords))
                     {
-                        //TODO: TESTING -> when succesful collapse & propagation -> reset position
-                        //PropagateNotifyCollapsedFrom(cellToBacktrack.coords, add: true); //NO PROPAGATION, surrounding tiles already notified
                         cellToBacktrack = null;
                     }
                 }
@@ -321,26 +298,23 @@ namespace PCG_Tool
                 else
                 {
                     //Reduce neighbour options (because they got refilled)
-                    if (!Propagate(cellToBacktrack.coords))
-                    {
-                        Debug.LogError("ERROR: Neighbouring tiles should not have entropy 0 in this case.");
-                    }
+                    Propagate(cellToBacktrack.coords);
 
                     //Resetting tile state to previous
-                    PropagateNotifyCollapsedFrom(cellToBacktrack.coords, add: false);
                     cellToBacktrack.RefillVariants(_allVariants);
                     ReduceNonCompatible(cellToBacktrack.coords);
                     _cellsByEntropy.Add(cellToBacktrack);
 
                     //Next tile
-                    currentBacktrackingOrder--;
-                    if(currentBacktrackingOrder < 0)
+                    currentNbCell--;
+                    if(currentNbCell < 0)
                     {
                         Backtrack(cellToBacktrack);
+                        cellToBacktrack = null;
                     }
                     else
                     {
-                        cellToBacktrack = _backtrackingOrder[currentBacktrackingOrder];
+                        cellToBacktrack = nbCells[currentNbCell];
                     }
                 }
             }
@@ -368,6 +342,20 @@ namespace PCG_Tool
             return coord.x == 0 || coord.x == _gridSize.x - 1 ||
                     coord.y == 0 || coord.y == _gridSize.y - 1 ||
                     coord.z == 0 || coord.z == _gridSize.z - 1;
+        }
+
+        private List<GridCell> GetNeighbouringCollapsedCells(GridCell cellToGetNb)
+        {
+            List<GridCell> neighbours = new List<GridCell>();
+            foreach (Vector3Int dir in NEIGHBOUR_DIRECTIONS)
+            {
+                Vector3Int coords = cellToGetNb.coords + dir;
+                if (!IsCoordInGrid(coords)) continue;
+
+                GridCell cell = _gridCells[coords.x, coords.y, coords.z];
+                if(cell.collapsed) neighbours.Add(cell);
+            }
+            return neighbours;
         }
 
         //Sorting
