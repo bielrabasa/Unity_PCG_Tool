@@ -250,6 +250,8 @@ namespace PCG_Tool
                     GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                     instance.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy | HideFlags.NotEditable;
                     instance.transform.position = pos;
+                    instance.transform.localScale = Vector3.one;
+                    instance.transform.rotation = Quaternion.identity;
                     instance.transform.SetParent(_previewParent.transform);
                     instance.layer = _previewLayer;
 

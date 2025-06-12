@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b8ddc7a494b84418d2a24df90f60fe, type: 3}
+  m_Name: Pipes_Rules
+  m_EditorClassIdentifier: 
+  tileSet: {fileID: 11400000, guid: 8e2ee4e375dfee647ad2ac7aa3c75bcd, type: 2}
+  tileRules:
+  - constraints: 14
+    weight: 1
+    Up: 8
+    Down: 8
+    Left: 4
+    Right: 8
+    Forward: 8
+    Back: 4
+  - constraints: 14
+    weight: 1
+    Up: 8
+    Down: 8
+    Left: 8
+    Right: 8
+    Forward: 1
+    Back: 4
+  - constraints: 14
+    weight: 1
+    Up: 8
+    Down: 8
+    Left: 8
+    Right: 8
+    Forward: 4
+    Back: 4
+  - constraints: 14
+    weight: 1
+    Up: 8
+    Down: 8
+    Left: 4
+    Right: 8
+    Forward: 4
+    Back: 4
+  - constraints: 0
+    weight: 1
+    Up: 1
+    Down: 1
+    Left: 1
+    Right: 1
+    Forward: 1
+    Back: 1
+  colorTable: 0900020004000100100020004000800000010002000400080010002000400080
+  airBorders: 1

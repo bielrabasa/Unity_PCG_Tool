@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 
 namespace PCG_Tool
 {
@@ -71,7 +72,6 @@ namespace PCG_Tool
 
         public void Generate()
         {
-            StopAllCoroutines();
             if (!CheckInformation()) return;
 
             SetupGridCells(); //TODO: Optimisation, only call if anything changed, not always
@@ -135,19 +135,19 @@ namespace PCG_Tool
             PrintModel();
         }
 
+        //Timed Debug solve
         public void TimedDebugSolver()
         {
             if(!debugMode) return;
-            StartCoroutine(TimerDebugSolver());
+
+            Generate();
+            EditorApplication.update += TimerDebugSolve;
         }
 
-        IEnumerator TimerDebugSolver()
+        private void TimerDebugSolve()
         {
-            while (!_solver.finished)
-            {
-                StepDebugSolver();
-                yield return null;
-            }
+            StepDebugSolver();
+            if (_solver.finished) EditorApplication.update -= TimerDebugSolve;
         }
 
         //OUTPUT
