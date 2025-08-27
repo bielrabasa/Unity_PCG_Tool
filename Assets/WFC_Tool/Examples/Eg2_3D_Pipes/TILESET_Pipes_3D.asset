@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb4fd9b2dd13084c9f530fd22332bc0, type: 3}
+  m_Name: TILESET_Pipes_3D
+  m_EditorClassIdentifier: 
+  tileSize: {x: 2, y: 2, z: 2}
+  tiles:
+  - {fileID: 0}
+  - {fileID: 4482638878064463105, guid: 01934252c4b69de4b8b220dd06824479, type: 3}
+  - {fileID: 2100143428237995657, guid: eb4cf4b25748b9c4b95d6e5601dde0ca, type: 3}
+  - {fileID: 6569447987904027576, guid: bde2afc70dff778479b9333b04329574, type: 3}
+  - {fileID: 8780074381497038052, guid: 0e0e75e0e01343742b3a55d1ffc02b21, type: 3}

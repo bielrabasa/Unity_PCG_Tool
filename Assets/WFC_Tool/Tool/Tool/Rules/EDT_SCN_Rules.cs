@@ -518,8 +518,6 @@ namespace PCG_Tool
 
         private void EnsureColorTextures()
         {
-            if (colorTextures != null) return;
-
             colorTextures = new Texture2D[SBO_Rules.MATRIX_COLOR_COUNT];
 
             colorTextures[0] = SCR_CheckerTextureUtility.GetCheckerTexture();

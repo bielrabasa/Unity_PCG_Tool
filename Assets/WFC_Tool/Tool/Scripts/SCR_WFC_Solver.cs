@@ -108,6 +108,8 @@ namespace PCG_Tool
 
             for (int i = 0; i < rules.tileRules.Length; i++)
             {
+                if (rules.tileRules[i].weight == 0f) continue;
+
                 variants = variants.Concat(TileVariant.GenerateVariantsFromTileRule(rules.tileRules[i], (short)i)).ToList();
             }
 
