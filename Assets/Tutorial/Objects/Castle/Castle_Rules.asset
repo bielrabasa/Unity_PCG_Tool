@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b8ddc7a494b84418d2a24df90f60fe, type: 3}
+  m_Name: Castle_Rules
+  m_EditorClassIdentifier: 
+  tileSet: {fileID: 11400000, guid: ae5c58d32a476d34480ddb437cb52405, type: 2}
+  tileRules:
+  - constraints: 0
+    weight: 1
+    Up: 4224
+    Down: 4096
+    Left: 4097
+    Right: 4097
+    Forward: 4097
+    Back: 4097
+  - constraints: 0
+    weight: 1
+    Up: 2
+    Down: 2
+    Left: 2
+    Right: 2
+    Forward: 2
+    Back: 2
+  - constraints: 0
+    weight: 1
+    Up: 1024
+    Down: 4
+    Left: 1024
+    Right: 1024
+    Forward: 1024
+    Back: 1024
+  - constraints: 4
+    weight: 1
+    Up: 512
+    Down: 4
+    Left: 512
+    Right: 1024
+    Forward: 1024
+    Back: 1024
+  - constraints: 4
+    weight: 1
+    Up: 512
+    Down: 4
+    Left: 512
+    Right: 1024
+    Forward: 1024
+    Back: 512
+  - constraints: 0
+    weight: 1
+    Up: 4
+    Down: 1
+    Left: 5
+    Right: 5
+    Forward: 5
+    Back: 5
+  - constraints: 4
+    weight: 1
+    Up: 512
+    Down: 2
+    Left: 512
+    Right: 512
+    Forward: 8
+    Back: 512
+  - constraints: 0
+    weight: 1
+    Up: 512
+    Down: 16
+    Left: 512
+    Right: 512
+    Forward: 512
+    Back: 512
+  - constraints: 0
+    weight: 1
+    Up: 512
+    Down: 16
+    Left: 512
+    Right: 512
+    Forward: 512
+    Back: 512
+  - constraints: 4
+    weight: 1
+    Up: 512
+    Down: 2
+    Left: 512
+    Right: 512
+    Forward: 8
+    Back: 8
+  - constraints: 0
+    weight: 1
+    Up: 16
+    Down: 18
+    Left: 512
+    Right: 512
+    Forward: 512
+    Back: 512
+  - constraints: 4
+    weight: 1
+    Up: 2
+    Down: 1024
+    Left: 512
+    Right: 2
+    Forward: 2
+    Back: 2
+  - constraints: 4
+    weight: 1
+    Up: 2
+    Down: 1026
+    Left: 512
+    Right: 2
+    Forward: 2
+    Back: 512
+  - constraints: 4
+    weight: 1
+    Up: 2
+    Down: 1024
+    Left: 512
+    Right: 2
+    Forward: 2
+    Back: 2
+  - constraints: 4
+    weight: 1
+    Up: 2
+    Down: 2
+    Left: 512
+    Right: 2
+    Forward: 2
+    Back: 2
+  colorTable: 8100020004000800100020004000010000010010000400080012002000400080
+  airBorders: 1

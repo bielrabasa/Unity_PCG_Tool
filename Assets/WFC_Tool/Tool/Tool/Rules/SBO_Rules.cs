@@ -17,6 +17,13 @@ namespace PCG_Tool
 
         public SBO_Rules()
         {
+            Init();
+        }
+
+        public void Init()
+        {
+            if(tileSet) tileRules = new TileRule[tileSet.tiles.Count];
+
             //Initialise colorTable diagonal
             colorTable = new TileColor[MATRIX_COLOR_COUNT];
 
@@ -24,6 +31,19 @@ namespace PCG_Tool
             {
                 TileColor color = (TileColor)(1 << i);
                 colorTable[i] = color;
+            }
+        }
+
+        public void UpdateTileSet()
+        {
+            if (tileSet == null) return;
+
+            tileRules = new TileRule[tileSet.GetTileCount()];
+
+            //Initialize weight to 1
+            for (int i = 0; i < tileRules.Length; i++)
+            {
+                tileRules[i].weight = 1f;
             }
         }
 

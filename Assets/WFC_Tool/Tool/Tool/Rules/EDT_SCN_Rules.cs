@@ -173,16 +173,7 @@ namespace PCG_Tool
 
         private void UpdateTileSet()
         {
-            if(rules.tileSet == null) return;
-
-            rules.tileRules = new TileRule[rules.tileSet.GetTileCount()];
-
-            //Initialize weight to 1
-            for(int i = 0; i< rules.tileRules.Length; i++)
-            {
-                rules.tileRules[i].weight = 1f;
-            }
-
+            rules.UpdateTileSet();
             EditorUtility.SetDirty(rules);
         }
 

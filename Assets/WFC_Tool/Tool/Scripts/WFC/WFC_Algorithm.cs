@@ -118,7 +118,7 @@ namespace PCG_Tool
             if (!_allowBacktracking) return;
 
             //Backtracking
-            while(_cellsByEntropy.Count > 0 && _cellsByEntropy[0].entropy == 0)
+            while(!finished && _cellsByEntropy.Count > 0 && _cellsByEntropy[0].entropy == 0)
             {
                 Backtrack(_cellsByEntropy[0]);
                 SortCells();
