@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b8ddc7a494b84418d2a24df90f60fe, type: 3}
   m_Name: RULES_Pipes_3D
   m_EditorClassIdentifier: 
-  tileSet: {fileID: 11400000, guid: 3023f46cce9ffcc469864d9c96f036e9, type: 2}
+  tileSet: {fileID: 11400000, guid: fa14e240b0fafcf41be0d41c959d94b0, type: 2}
   tileRules:
   - constraints: 0
     weight: 0.5
@@ -22,7 +22,7 @@ MonoBehaviour:
     Right: 1
     Forward: 1
     Back: 1
-  - constraints: 4
+  - constraints: 14
     weight: 0.8
     Up: 2
     Down: 2
@@ -30,7 +30,7 @@ MonoBehaviour:
     Right: 2
     Forward: 4
     Back: 2
-  - constraints: 4
+  - constraints: 14
     weight: 0.2
     Up: 2
     Down: 2
@@ -38,7 +38,7 @@ MonoBehaviour:
     Right: 2
     Forward: 4
     Back: 2
-  - constraints: 4
+  - constraints: 14
     weight: 1
     Up: 2
     Down: 2
@@ -46,7 +46,7 @@ MonoBehaviour:
     Right: 2
     Forward: 4
     Back: 4
-  - constraints: 4
+  - constraints: 14
     weight: 0.5
     Up: 2
     Down: 2

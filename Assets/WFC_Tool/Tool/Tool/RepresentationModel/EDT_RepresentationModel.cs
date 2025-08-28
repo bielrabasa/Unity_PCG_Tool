@@ -33,6 +33,11 @@ namespace PCG_Tool
             {
                 EDT_WIN_RepresentationModel.ShowWindow(model);
             }
+
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(model);
+            }
         }
     }
 

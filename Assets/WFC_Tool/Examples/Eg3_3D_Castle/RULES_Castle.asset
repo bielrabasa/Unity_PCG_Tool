@@ -24,20 +24,20 @@ MonoBehaviour:
     Back: 1
   - constraints: 4
     weight: 1
-    Up: 512
+    Up: 513
     Down: 2
-    Left: 512
-    Right: 512
+    Left: 513
+    Right: 513
     Forward: 8
-    Back: 512
+    Back: 513
   - constraints: 0
     weight: 1
     Up: 512
     Down: 18
-    Left: 512
-    Right: 512
-    Forward: 512
-    Back: 512
+    Left: 513
+    Right: 513
+    Forward: 513
+    Back: 513
   - constraints: 0
     weight: 1
     Up: 512
@@ -48,10 +48,10 @@ MonoBehaviour:
     Back: 512
   - constraints: 4
     weight: 1
-    Up: 512
+    Up: 513
     Down: 2
-    Left: 512
-    Right: 512
+    Left: 513
+    Right: 513
     Forward: 8
     Back: 8
   - constraints: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     Forward: 512
     Back: 512
   - constraints: 4
-    weight: 0.3
+    weight: 0
     Up: 2
     Down: 514
     Left: 512
@@ -71,7 +71,7 @@ MonoBehaviour:
     Forward: 2
     Back: 2
   - constraints: 4
-    weight: 0.1
+    weight: 0
     Up: 2
     Down: 514
     Left: 512
@@ -79,7 +79,7 @@ MonoBehaviour:
     Forward: 2
     Back: 512
   - constraints: 4
-    weight: 0.3
+    weight: 0
     Up: 2
     Down: 514
     Left: 512

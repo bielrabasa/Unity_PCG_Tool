@@ -153,7 +153,7 @@ namespace PCG_Tool
         Back
     }
 
-    [System.Flags]
+    [System.Flags, System.Serializable]
     public enum TileColor : ushort
     {
         None = 0,
@@ -175,7 +175,7 @@ namespace PCG_Tool
         Teal = 1 << 15
     }
 
-    [System.Flags]
+    [System.Flags, System.Serializable]
     public enum TileConstraints : byte
     {
         None = 0,

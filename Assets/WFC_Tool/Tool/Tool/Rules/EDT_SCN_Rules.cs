@@ -306,6 +306,10 @@ namespace PCG_Tool
                 rule.weight = Mathf.Round(rule.weight * 100f) / 100f;
                 GUILayout.EndArea();
 
+                if (GUI.changed)
+                {
+                    EditorUtility.SetDirty(rules);
+                }
 
                 Handles.EndGUI();
 
@@ -550,6 +554,7 @@ namespace PCG_Tool
         void ProcessTileClick(EDT_GUI_FacePreview face)
         {
             rules.tileRules[face.ownerId].SwitchColorToFace(face.dir, TileRule.GetTileColorByIndex(selectedColorIndex));
+            EditorUtility.SetDirty(rules);
         }
 
         void InspectorColorCompatibilityMatrix()

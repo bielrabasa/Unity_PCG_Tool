@@ -13,35 +13,36 @@ MonoBehaviour:
   m_Name: RM_PipesBorder
   m_EditorClassIdentifier: 
   tileSet: {fileID: 11400000, guid: 3023f46cce9ffcc469864d9c96f036e9, type: 2}
+  gridSize: {x: 15, y: 1, z: 15}
   tiles:
   - id: 1
     orient: 8
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
+    orient: 24
   - id: 4
     orient: 8
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 4
     orient: 8
   - id: 3
+    orient: 24
+  - id: 3
+    orient: 24
+  - id: 3
+    orient: 24
+  - id: 4
     orient: 8
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
+    orient: 24
   - id: 1
     orient: 0
   - id: 3
@@ -74,126 +75,6 @@ MonoBehaviour:
     orient: 0
   - id: 3
     orient: 0
-  - id: 4
-    orient: 16
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: 4
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: -1
-    orient: 0
-  - id: 3
-    orient: 0
   - id: 3
     orient: 0
   - id: -1
@@ -344,6 +225,36 @@ MonoBehaviour:
     orient: 0
   - id: 3
     orient: 0
+  - id: 4
+    orient: 16
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: 4
+    orient: 0
   - id: 3
     orient: 0
   - id: -1
@@ -372,10 +283,100 @@ MonoBehaviour:
     orient: 0
   - id: -1
     orient: 0
-  - id: 4
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: 3
     orient: 0
   - id: 4
     orient: 16
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: -1
+    orient: 0
+  - id: 4
+    orient: 0
+  - id: 3
+    orient: 0
   - id: -1
     orient: 0
   - id: -1
@@ -437,30 +438,30 @@ MonoBehaviour:
   - id: 1
     orient: 16
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
-  - id: 3
-    orient: 8
+    orient: 24
   - id: 4
     orient: 24
   - id: 3
-    orient: 8
+    orient: 24
+  - id: 3
+    orient: 24
+  - id: 3
+    orient: 24
   - id: 4
     orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
+  - id: 4
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 3
-    orient: 8
+    orient: 24
   - id: 1
     orient: 24

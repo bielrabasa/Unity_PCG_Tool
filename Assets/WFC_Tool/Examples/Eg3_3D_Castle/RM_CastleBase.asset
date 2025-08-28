@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RM_CastleBase
   m_EditorClassIdentifier: 
   tileSet: {fileID: 11400000, guid: 493216bc1a64b2d4c8807e9ab921d499, type: 2}
+  gridSize: {x: 5, y: 5, z: 5}
   tiles:
   - id: 7
     orient: 0
@@ -117,11 +118,11 @@ MonoBehaviour:
   - id: -1
     orient: 0
   - id: -1
-    orient: 24
+    orient: 0
   - id: -1
-    orient: 24
+    orient: 0
   - id: -1
-    orient: 24
+    orient: 0
   - id: -1
     orient: 0
   - id: -1
