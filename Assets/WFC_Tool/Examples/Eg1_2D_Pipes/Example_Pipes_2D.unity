@@ -419,10 +419,276 @@ MonoBehaviour:
   - id: 0
     orient: 0
   - id: 3
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
     orient: 0
   - id: 0
     orient: 0
   - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 3
+    orient: 8
+  - id: 3
+    orient: 8
+  - id: 3
+    orient: 8
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 4
+    orient: 16
+  - id: 3
+    orient: 24
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 8
+  - id: 3
+    orient: 8
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 3
+    orient: 24
+  - id: 4
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 3
+    orient: 8
+  - id: 3
+    orient: 8
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 4
+    orient: 16
+  - id: 4
+    orient: 8
+  - id: 4
+    orient: 24
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 8
+  - id: 3
+    orient: 24
+  - id: 4
+    orient: 8
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 4
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 4
+    orient: 16
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 4
+    orient: 16
+  - id: 3
+    orient: 8
+  - id: 4
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 4
+    orient: 24
+  - id: 3
+    orient: 8
+  - id: 4
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 2
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 2
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 3
+    orient: 8
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 0
+  - id: 2
+    orient: 8
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 2
     orient: 0
   - id: 0
     orient: 0
@@ -434,39 +700,13 @@ MonoBehaviour:
     orient: 0
   - id: 0
     orient: 0
-  - id: 3
-    orient: 16
   - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
     orient: 0
   - id: 0
     orient: 0
   - id: 0
     orient: 0
-  - id: 1
-    orient: 16
   - id: 3
-    orient: 24
-  - id: 3
-    orient: 24
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 8
-  - id: 4
-    orient: 8
-  - id: 3
-    orient: 8
-  - id: 1
-    orient: 24
-  - id: 0
     orient: 0
   - id: 0
     orient: 0
@@ -478,45 +718,13 @@ MonoBehaviour:
     orient: 24
   - id: 0
     orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
   - id: 1
     orient: 16
   - id: 1
     orient: 0
   - id: 0
     orient: 0
-  - id: 2
-    orient: 16
   - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 8
-  - id: 4
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 8
-  - id: 2
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 3
     orient: 0
   - id: 0
     orient: 0
@@ -526,145 +734,7 @@ MonoBehaviour:
     orient: 8
   - id: 3
     orient: 8
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
   - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 3
-    orient: 24
-  - id: 1
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 8
-  - id: 1
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 8
-  - id: 1
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 8
-  - id: 1
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 4
-    orient: 16
-  - id: 3
-    orient: 8
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 2
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 3
-    orient: 8
-  - id: 4
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 4
-    orient: 16
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 8
-  - id: 3
-    orient: 8
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 3
-    orient: 8
-  - id: 4
-    orient: 24
-  - id: 3
-    orient: 8
-  - id: 4
     orient: 24
   - id: 4
     orient: 24
@@ -672,16 +742,6 @@ MonoBehaviour:
     orient: 8
   - id: 4
     orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
   - id: 3
     orient: 0
   - id: 0
@@ -690,78 +750,32 @@ MonoBehaviour:
     orient: 0
   - id: 0
     orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 4
+  - id: 1
     orient: 16
   - id: 2
     orient: 24
   - id: 0
     orient: 0
-  - id: 3
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 4
-    orient: 16
-  - id: 3
-    orient: 8
-  - id: 4
-    orient: 8
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
   - id: 1
     orient: 8
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
   - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 3
-    orient: 24
-  - id: 4
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 4
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 4
-    orient: 24
-  - id: 4
     orient: 8
-  - id: 3
-    orient: 24
   - id: 1
     orient: 24
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 3
+    orient: 0
+  - id: 0
+    orient: 0
   - id: 0
     orient: 0
   - id: 2
@@ -770,12 +784,6 @@ MonoBehaviour:
     orient: 0
   - id: 0
     orient: 0
-  - id: 3
-    orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
   - id: 0
     orient: 0
   - id: 3
@@ -786,15 +794,7 @@ MonoBehaviour:
     orient: 0
   - id: 0
     orient: 0
-  - id: 3
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 0
-  - id: 3
+  - id: 2
     orient: 0
   - id: 0
     orient: 0
@@ -4002,71 +4002,23 @@ MonoBehaviour:
     orient: 8
   - id: 1
     orient: 8
-  - id: 1
-    orient: 8
   - id: 0
     orient: 0
   - id: 0
     orient: 8
   - id: 1
-    orient: 8
+    orient: 24
   - id: 1
     orient: 24
   - id: 0
     orient: 0
   - id: 0
     orient: 8
-  - id: 0
-    orient: 0
   - id: 1
-    orient: 0
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
     orient: 24
   - id: 0
-    orient: 8
-  - id: 1
-    orient: 8
-  - id: 0
-    orient: 24
-  - id: 1
     orient: 0
   - id: 1
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 24
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 8
-  - id: 1
-    orient: 8
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 16
-  - id: 0
     orient: 0
   - id: 0
     orient: 8
@@ -4076,110 +4028,8 @@ MonoBehaviour:
     orient: 16
   - id: 0
     orient: 8
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 0
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 16
   - id: 1
     orient: 8
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 24
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 8
-  - id: 1
-    orient: 24
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 24
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 24
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 24
-  - id: 1
-    orient: 16
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 1
-    orient: 0
-  - id: 0
-    orient: 8
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
-  - id: 0
-    orient: 0
-  - id: 0
-    orient: 16
   - id: 0
     orient: 24
   - id: 0
@@ -4193,9 +4043,159 @@ MonoBehaviour:
   - id: 0
     orient: 24
   - id: 0
+    orient: 8
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 16
+  - id: 1
+    orient: 24
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 1
+    orient: 24
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 24
+  - id: 1
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 8
+  - id: 1
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 0
     orient: 16
   - id: 1
     orient: 8
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 8
+  - id: 1
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 0
+  - id: 1
+    orient: 0
+  - id: 1
+    orient: 16
+  - id: 1
+    orient: 16
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 16
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 16
+  - id: 0
+    orient: 24
+  - id: 1
+    orient: 0
+  - id: 0
+    orient: 8
+  - id: 0
+    orient: 0
+  - id: 0
+    orient: 16
+  - id: 1
+    orient: 24
+  - id: 1
+    orient: 8
+  - id: 1
+    orient: 8
+  - id: 1
+    orient: 8
+  - id: 1
+    orient: 24
+  - id: 1
+    orient: 24
+  - id: 0
+    orient: 24
+  - id: 0
+    orient: 16
   - id: 0
     orient: 24
 --- !u!1001 &1155746932
@@ -5884,7 +5884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1751510176}
   m_Layer: 0
-  m_Name: Generated Tiles
+  m_Name: sample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5899,7 +5899,7 @@ Transform:
   m_GameObject: {fileID: 1751510175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -30, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
