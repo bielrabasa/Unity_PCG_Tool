@@ -33,7 +33,7 @@ public class EDT_ModelPrinter : Editor
 
         //Generate button
         GUI.backgroundColor = STY_Style.Positive_Color;
-        if (GUILayout.Button("Generate", STY_Style.Button_Layout))
+        if (GUILayout.Button("Print Model", STY_Style.Button_Layout))
         {
             printer.Generate();
         }

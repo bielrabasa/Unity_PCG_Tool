@@ -1,7 +1,5 @@
-using PCG_Tool;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace PCG_Tool
 {
@@ -15,7 +13,7 @@ namespace PCG_Tool
 
             SCR_WFC_Solver solver = (SCR_WFC_Solver)target;
 
-            GUI.backgroundColor = STY_Style.Variable_Color;
+            GUI.backgroundColor = STY_Style.Activated_Color;
             if (GUILayout.Button("Generate", STY_Style.Button_Layout))
             {
                 solver.Generate();
